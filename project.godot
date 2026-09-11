@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="EmptyGodot"
+config/description="An empty Godot project packaged for Android (C# version)."
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.7", "C#", "Forward Plus")
+config/icon="res://icon.svg"
+
+[android]
+
+modules/"org/godotengine/godot/plugin/android/v2/SplashScreenPluginV2/plugin.config"=""
+android_template/launcher_icons/xxxhdpi_192x192="res://icon.svg"
+android_template/launcher_icons/xxhdpi_144x144="res://icon.svg"
+android_template/launcher_icons/xhdpi_96x96="res://icon.svg"
+android_template/launcher_icons/hdpi_72x72="res://icon.svg"
+android_template/launcher_icons/mdpi_48x48="res://icon.svg"
+android_template/colors/colors.xml="res://icon.svg"
+package/unique_name="com.example.emptygodot"
+package/name="EmptyGodot"
+package/signed=true
+package/app_category=2
+package/retain_data_on_uninstall=true
+package/exclude_from_recents=false
+package/show_in_android_tv=false
+package/show_in_app_library=true
+package/show_as_launcher_app=false
+config/launcher_name=""
+config/launcher_icon=""
+config/one_signin_id="00000000-0000-0000-0000-000000000000"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

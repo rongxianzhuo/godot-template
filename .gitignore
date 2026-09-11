@@ -1,0 +1,62 @@
+# ─── Godot 4+ specific ignores ──────────────────────────────────
+# Godot's per-project editor cache (regenerated on each import)
+.godot/
+
+# Android build template (extracted from export_templates, regenerated)
+android/
+
+# Legacy Godot 3 import cache (kept for projects upgraded from 3.x)
+.import/
+
+# ─── Build outputs ────────────────────────────────────────────────
+# Exported APK / AAB / executables
+builds/
+*.apk
+*.apk.idsig
+*.aab
+*.exe
+*.x86_64
+*.x86_32
+*.arm32
+*.arm64
+
+# ─── C# / .NET / Mono ignores ─────────────────────────────────────
+# Mono build cache (generated when Godot invokes dotnet build)
+.mono/
+data_*/
+mono_crash.*.json
+
+# Visual Studio / Rider / VS Code junk
+.vs/
+.vscode/
+.idea/
+*.csproj.user
+*.user
+*.suo
+
+# .NET standard
+bin/
+obj/
+
+# ─── OS / editor junk ─────────────────────────────────────────────
+# macOS
+.DS_Store
+.directory
+
+# Linux
+.Trash-*
+
+# Backup / swap files
+*~
+*.swp
+*.bak
+
+# ─── Secrets (NEVER commit) ───────────────────────────────────────
+# Release keystore / signing certificates
+*.keystore
+*.jks
+*.p12
+*.pfx
+keystore/
+# Godot editor credentials
+.godot/editor/*
