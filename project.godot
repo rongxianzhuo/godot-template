@@ -10,11 +10,11 @@ config_version=5
 
 [application]
 
-config/name="EmptyGodot"
-config/description="An empty Godot project packaged for Android (C# version)."
+config/name="GodotTemplate"
+config/description="A Godot 4 + C# + Android project template."
 run/main_scene="res://src/Main.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/icons/icon.svg"
 
 [android]
 
