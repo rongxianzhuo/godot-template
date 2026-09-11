@@ -26,9 +26,16 @@ Android SDK / NDK、Gradle 路径选择、签名、导出预设 —— 你 clone
 
 ```
 .
-├── Main.cs                  # 业务逻辑（计数器）
-├── Main.tscn                # 主场景
-├── Main.cs.uid              # Godot UID 映射
+├── AGENTS.md                # AI agent 工作契约（agent 必读）
+├── README.md
+├── src/
+│   ├── Main.tscn            # 极简启动场景（agent 不修改）
+│   ├── Core/                # 基础设施
+│   │   ├── Bootstrap.cs     # 反射扫描所有 feature 并加载
+│   │   └── GodotFeature.cs  # [GodotFeature] 标注定义
+│   └── Features/            # 业务逻辑（每个功能一个目录）
+│       └── Counter/
+│           └── CounterFeature.cs
 ├── project.godot            # Godot 工程配置
 ├── icon.svg                 # 应用图标
 ├── icon.svg.import          # 图标导入元数据
@@ -40,6 +47,9 @@ Android SDK / NDK、Gradle 路径选择、签名、导出预设 —— 你 clone
 ├── android/                 # Android 导出模板（被 .gitignore，不入库）
 └── .godot/                  # Godot 编辑器缓存（被 .gitignore，不入库）
 ```
+
+加新功能的方式：在 `src/Features/<Name>/` 下丢一个标了 `[GodotFeature]` 的 C# 类，
+Bootstrap 启动时自动加载。详见 [`AGENTS.md`](./AGENTS.md)。
 
 ### 🚀 本地开发（桌面）
 
@@ -54,7 +64,7 @@ godot --path . --editor
 godot --path . --quit-after 60
 ```
 
-修改 `Main.cs` 里的逻辑即可。Godot 4 的 C# 编辑器支持热重载。
+修改 `src/Features/<Name>/<Name>Feature.cs` 里的逻辑即可。Godot 4 的 C# 编辑器支持热重载。
 
 ### 📱 打包 Android APK
 
