@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>GodotTemplate.Match3Tests</RootNamespace>
+    <AssemblyName>Match3Tests</AssemblyName>
+    <!-- Self-contained AOT-friendly defaults; tweak per env if needed. -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <!--
+    Pull algorithm sources in directly so the test project doesn't depend on
+    a separate csproj. Pure .NET 9 — NO Godot deps in any included file.
+    Match3Feature.cs is a stub class with no Godot refs, so it's safe to include.
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\src\Features\Match3\*.cs"
+             LinkBase="Match3" />
+  </ItemGroup>
+</Project>
