@@ -3,6 +3,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
+    <!-- ImplicitUsings: pulls in System.*, System.Collections.Generic, etc. so
+         feature files (e.g. Juan's Match3 algorithm layer) don't need to
+         spell out each using directive. Matches the test project's setting. -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Disable SDK's default AssemblyInfo generation — Godot.NET.Sdk emits its
+         own AssemblyInfo with Godot-specific attributes. Without these, you
+         get CS0579 "Duplicate AssemblyXxxAttribute" errors. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <!-- GameFramework submodule at addons/godot-framework/ is picked up by
        the .NET SDK's default Compile glob (it walks the entire project tree). -->
