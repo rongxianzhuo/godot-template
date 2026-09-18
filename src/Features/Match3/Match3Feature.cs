@@ -22,7 +22,7 @@ namespace GodotTemplate.Features.Match3;
 public partial class Match3Feature : Node
 {
     // ---- algorithm layer (pure C#, no Godot refs) ----
-    private readonly Board _board = new(seed: 42);
+    private readonly Board _board = new();
     private readonly MatchEngine _engine = new();
     private readonly ScoreManager _scores = new();
     private readonly GameState _state = new();
@@ -57,6 +57,7 @@ public partial class Match3Feature : Node
     private void StartNewGame()
     {
         GD.Print("[Match3Feature] -> Game (start)");
+        _board.FillRandomNoOpeningMatch();   // fresh board every game
         _scores.Reset(level: 0, movesMax: 20, target: 500);
         _state.StartLevel(level: 0);
         // Re-bind board + engine (fresh start).
@@ -98,6 +99,14 @@ public partial class Match3Feature : Node
     private void OnMoveCommitted(int points, int cleared, bool outOfMoves)
     {
         UpdateHud();
+
+        // Win check: post-cascade score crosses target. Win supersedes out-of-moves.
+        if (_scores.IsWon() && _state.Phase == GamePhase.Playing)
+        {
+            GD.Print($"[Match3Feature] Score {_scores.Score} >= Target {_scores.Target} -> Won");
+            _state.NotifyWin();
+            return;
+        }
         if (outOfMoves)
         {
             GD.Print("[Match3Feature] Out of moves -> GameOver");

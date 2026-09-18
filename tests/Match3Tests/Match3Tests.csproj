@@ -13,11 +13,17 @@
 
   <!--
     Pull algorithm sources in directly so the test project doesn't depend on
-    a separate csproj. Pure .NET 9 — NO Godot deps in any included file.
-    Match3Feature.cs is a stub class with no Godot refs, so it's safe to include.
+    a separate csproj. Pure .NET 9 — exclude Godot-using files (those are
+    only compiled by GodotTemplate.csproj with the Godot.NET.Sdk).
+    Algorithm files: Board.cs, GameState.cs, Gem.cs, MatchEngine.cs, ScoreManager.cs
+    Godot-using files (excluded): Match3Feature.cs, Match3BoardView.cs,
+                                  GameScenes.cs, SpritePaths.cs
   -->
   <ItemGroup>
-    <Compile Include="..\..\src\Features\Match3\*.cs"
-             LinkBase="Match3" />
+    <Compile Include="..\..\src\Features\Match3\Board.cs"          LinkBase="Match3" />
+    <Compile Include="..\..\src\Features\Match3\GameState.cs"      LinkBase="Match3" />
+    <Compile Include="..\..\src\Features\Match3\Gem.cs"            LinkBase="Match3" />
+    <Compile Include="..\..\src\Features\Match3\MatchEngine.cs"    LinkBase="Match3" />
+    <Compile Include="..\..\src\Features\Match3\ScoreManager.cs"   LinkBase="Match3" />
   </ItemGroup>
 </Project>
