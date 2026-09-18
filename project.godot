@@ -16,6 +16,11 @@ run/main_scene="res://src/Main.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://assets/icons/icon.svg"
 
+[autoload]
+
+GameFramework="*res://addons/godot-framework/src/GameFramework/Game.cs"
+UIManager="*res://addons/godot-framework/src/GameFramework/UIManager.cs"
+
 [android]
 
 modules/"org/godotengine/godot/plugin/android/v2/SplashScreenPluginV2/plugin.config"=""

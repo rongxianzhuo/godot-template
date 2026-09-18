@@ -4,4 +4,6 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <!-- GameFramework submodule at addons/godot-framework/ is picked up by
+       the .NET SDK's default Compile glob (it walks the entire project tree). -->
 </Project>
