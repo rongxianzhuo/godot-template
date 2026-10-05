@@ -30,6 +30,19 @@
   <ItemGroup>
     <Compile Remove="addons/godot-framework/samples/**/*.cs" />
   </ItemGroup>
+  <!--
+    Exclude framework's tests/ directory as well. Framework v0.3-prep
+    (commit 7265922) added an xUnit test project under
+    addons/godot-framework/tests/. Without this remove, MSBuild's default
+    Compile glob would pull those test classes into GodotTemplate.dll and
+    emit CS0246 (xunit types unresolved) errors — there's no xunit NuGet
+    reference in the main project.
+
+    Ref: Mark 2026-10-05 D5 plan, "critical pre-sync action".
+  -->
+  <ItemGroup>
+    <Compile Remove="addons/godot-framework/tests/**/*.cs" />
+  </ItemGroup>
   <!-- GameFramework submodule at addons/godot-framework/src/ is picked up by
        the .NET SDK's default Compile glob — that's intentional (Pattern A
        from the framework README). -->
