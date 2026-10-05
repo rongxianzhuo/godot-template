@@ -82,31 +82,35 @@ grep -rn 'MagicMatch\|magicstudio\|emptygodot\|EmptyGodot\|build-godot' . \
 # should return zero hits
 ```
 
-## 3. Generate your own debug keystore (1 min)
+## 3. Debug keystore (auto — usually no work)
 
-The repo's `export_presets.cfg` points at a hardcoded path. Generate a
-standard Android debug keystore at the path you chose in step 2:
+`scripts/configure.sh` (step 0) auto-generates a standard Android debug
+keystore at `$HOME/.android/debug.keystore` if one isn't already there.
+The credentials are the standard debug pair (alias=`androiddebugkey`,
+passwords=`android`), which matches `export_presets.cfg`'s
+`keystore/debug_user` and `keystore/debug_password`.
 
-```bash
-# Standard location:
-mkdir -p ~/.android
-keytool -genkeypair \
-    -keystore ~/.android/debug.keystore \
-    -storepass android \
-    -alias androiddebugkey \
-    -keypass android \
-    -dname "CN=Android Debug,O=<Your Org>,C=US" \
-    -keyalg RSA -keysize 2048 \
-    -validity 10000
-```
+If you used a non-default keystore path via `--keystore`, configure.sh
+generates there instead.
 
-If you used a non-standard path in step 2, adjust. Credentials in
-`export_presets.cfg` should remain:
-- `keystore/debug_user="androiddebugkey"`
-- `keystore/debug_password="android"`
+**If you see "Unable to open keystore" during `make build`**:
+- Run `bash scripts/configure.sh` again (it checks + generates on each run)
+- Or generate manually:
+  ```bash
+  mkdir -p ~/.android
+  keytool -genkeypair \
+      -keystore ~/.android/debug.keystore \
+      -storepass android \
+      -alias androiddebugkey \
+      -keypass android \
+      -dname "CN=Android Debug,O=Android,C=US" \
+      -keyalg RSA -keysize 2048 \
+      -validity 10000
+  ```
 
-(Founder decision pending for release keystore strategy — see
-`docs/release-keystore.md` once that lands.)
+(Founder decision pending for **release** keystore strategy — see
+`docs/release-keystore.md` once that lands. configure.sh only handles
+the debug keystore.)
 
 ## 4. Replace project icon (1 min)
 
