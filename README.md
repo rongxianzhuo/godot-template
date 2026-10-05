@@ -119,6 +119,9 @@ godot --headless --path . --export-release "Android" builds/app.apk
 5. **Godot Mono Linux x86_64 包的真实 URL 是 `mono_linux_x86_64.zip`（下划线）**，GitHub release 页面展示的版本 `mono_linux.x86_64.zip`（点）是错的
 6. **C# + Android 非 Gradle 路径要求 TFM = `net9.0`**，用 `net8.0` / `net10.0` 都会报错
 7. **512 MB 内存限制下 Gradle daemon 必崩**，所以这个模板用 `use_gradle_build=false`（老的 APK 直接打包路径）。如果有 ≥ 2 GB 内存，改回 `use_gradle_build=true` 可以让 AAB / Vulkan / 高级选项可用
+8. **`android_source.zip` 在 Godot 4.7+ release 里不再单独发布**，只在 `export_templates.tpz` 内部的 `templates/` 子目录里。`scripts/install-android-templates.sh` 一次性下载 `.tpz` 然后从内部提取（要用 `unzip -j` flatten templates/ 子目录，因为 Godot 期望 `android_debug.apk` 直接在版本目录）
+9. **NDK r26d 已从 Android SDK 包库移除**（虽然 Godot 4.7 文档还在引用）。`scripts/install-toolchain.sh` 现在会自动 fallback 到 sdkmanager 里最高可用的 r-NDK（实测现在最高是 `30.0.16248370`）
+10. **Framework submodule 的 `samples/` 会被 Godot.NET.Sdk 的默认 Compile glob 自动 include 进主项目 assembly**——除非显式加 `<Compile Remove="addons/godot-framework/samples/**/*.cs" />`。已经修了，但 CI 会跑 sample pollution 检查防止回归
 
 ### 📜 License
 

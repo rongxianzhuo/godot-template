@@ -1,0 +1,154 @@
+name: build
+
+on:
+  push:
+    branches: [main, phase-0/**]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-progress runs of the same workflow on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ─── verify (the CI gate — fast, no APK export) ─────────────────────────────
+  # Runs on every PR + push. APK export would take 5+ min and 1+ GB; it's
+  # gated behind the manual workflow_dispatch + tag push trigger below.
+  verify:
+    name: verify (test + compile + sample-pollution check)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+              openjdk-17-jdk-headless \
+              libicu74 \
+              binutils
+
+      - name: Install Godot 4.7.2 Mono
+        # GH release URL uses UNDERSCORES in mono_linux_x86_64 — README §Pitfalls #5
+        run: |
+          wget -q -O /tmp/godot.zip \
+              "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_mono_linux_x86_64.zip"
+          sudo mkdir -p /opt/godot
+          sudo unzip -q /tmp/godot.zip -d /opt/godot
+          sudo ln -sf /opt/godot/Godot_v4.7.2-stable_mono_linux_x86_64/Godot_v4.7.2-stable_mono_linux.x86_64 \
+                       /usr/local/bin/godot
+          godot --version
+
+      - name: Run algorithm tests
+        run: bash scripts/test-algorithm.sh
+
+      - name: Build (verify compile)
+        run: dotnet build GodotTemplate.csproj -c Debug
+
+      - name: Verify no sample pollution
+        # Regression check for the <Compile Remove> fix on
+        # GodotTemplate.csproj. Without that fix, 4 demo classes
+        # get pulled into the main assembly.
+        run: |
+          DLL=$(find .godot/mono/temp/bin/Debug -name 'GodotTemplate.dll' | head -1)
+          if [ -z "$DLL" ]; then
+              echo "::error::GodotTemplate.dll not found — build may have failed silently"
+              exit 1
+          fi
+          if strings "$DLL" | grep -qE 'GameFramework\.Demo\.|AudioService'; then
+              echo "::error::sample pollution in $DLL"
+              strings "$DLL" | grep -E 'GameFramework\.Demo\.|AudioService' | head
+              exit 1
+          fi
+          echo "✅ no sample pollution"
+
+  # ─── apk (manual trigger — slow, ~5 min, ~110 MB artifact) ────────────────
+  # Triggered manually via the GitHub Actions UI, or by pushing a tag.
+  # NOT run on every PR — APK export is too slow + resource-heavy.
+  apk:
+    name: apk (full debug APK build)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+              openjdk-17-jdk-headless \
+              libicu74 \
+              binutils \
+              wget unzip zip
+
+      - name: Install Godot 4.7.2 Mono
+        run: |
+          wget -q -O /tmp/godot.zip \
+              "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_mono_linux_x86_64.zip"
+          sudo mkdir -p /opt/godot
+          sudo unzip -q /tmp/godot.zip -d /opt/godot
+          sudo ln -sf /opt/godot/Godot_v4.7.2-stable_mono_linux_x86_64/Godot_v4.7.2-stable_mono_linux.x86_64 \
+                       /usr/local/bin/godot
+
+      - name: Install Android templates
+        run: bash scripts/install-android-templates.sh
+        env:
+          ANDROID_HOME: /opt/android-sdk
+
+      - name: Generate debug keystore
+        # Mark's export_presets.cfg points at /root/build-godot/keystore/debug.keystore.
+        # We override the env var to keep the keystore in CI's $GITHUB_WORKSPACE.
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/keystore"
+          keytool -genkeypair \
+              -keystore "$GITHUB_WORKSPACE/keystore/debug.keystore" \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -dname "CN=Android Debug,O=CI,C=US" \
+              -keyalg RSA -keysize 2048 \
+              -validity 10000
+
+      - name: Configure app identity
+        env:
+          APP_NAME: CI Match3
+          APP_PACKAGE: io.github.ci.match3
+          APP_AUTHOR: CI Bot
+          APP_DESCRIPTION: CI build of godot-template
+          APP_KEYSTORE: ${{ github.workspace }}/keystore/debug.keystore
+        run: bash scripts/configure.sh
+
+      - name: Build debug APK
+        run: bash scripts/build-debug.sh
+        env:
+          ANDROID_HOME: /opt/android-sdk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: builds/*.apk
+          if-no-files-found: error
+          retention-days: 14
