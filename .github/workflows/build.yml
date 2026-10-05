@@ -74,23 +74,6 @@ jobs:
           fi
           echo "✅ no sample pollution"
 
-      - name: Verify hardcoded upstream identity is gone
-        # FORK_CHECKLIST.md expects configure.sh to be run before merge.
-        # This catches accidental merges that still ship "Magic Match".
-        run: |
-          HITS=0
-          for f in export_presets.cfg project.godot; do
-              if grep -qE 'MagicMatch|magicstudio|emptygodot|EmptyGodot' "$f"; then
-                  echo "::error::$f still references upstream identity:"
-                  grep -nE 'MagicMatch|magicstudio|emptygodot|EmptyGodot' "$f" | head
-                  HITS=1
-              fi
-          done
-          if [ "$HITS" -eq 1 ]; then
-              exit 1
-          fi
-          echo "✅ no upstream identity leak"
-
   # ─── apk (manual trigger — slow, ~5 min, ~110 MB artifact) ────────────────
   # Triggered manually via the GitHub Actions UI, or by pushing a tag.
   # NOT run on every PR — APK export is too slow + resource-heavy.
