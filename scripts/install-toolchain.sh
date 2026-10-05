@@ -51,6 +51,9 @@ PREFIX="${PREFIX:-/opt}"
 ANDROID_HOME="${ANDROID_HOME:-$HOME/android-sdk}"
 DOTNET_VERSION="${DOTNET_VERSION:-9.0}"
 GODOT_VERSION="${GODOT_VERSION:-4.7.2-stable}"
+# Default NDK: Godot 4.7+ docs historically reference r26d, but Android has since
+# shipped r27/r28/r29/r30 and r26d is no longer in sdkmanager's package index.
+# Try the historical default first; fall back to latest available r-NDK.
 ANDROID_NDK_VERSION="${ANDROID_NDK_VERSION:-r26d}"
 ANDROID_PLATFORM="android-36"
 ANDROID_BUILD_TOOLS="36.1.0"
@@ -216,6 +219,24 @@ else
 fi
 
 log "installing SDK packages: ${NEEDED_PACKAGES[*]}"
+# NDK fallback: r26d (Godot 4.7 docs default) may not exist in current sdkmanager.
+# If install fails, retry with the highest available r-NDK.
+NDK_PKG="ndk;${ANDROID_NDK_VERSION}"
+NEED_NDK_FALLBACK=0
+if printf '%s\n' "${NEEDED_PACKAGES[@]}" | grep -qx "$NDK_PKG"; then
+    if ! sdkmanager "$NDK_PKG" >/dev/null 2>&1; then
+        warn "NDK ${ANDROID_NDK_VERSION} not available — falling back to highest r-NDK"
+        NEED_NDK_FALLBACK=1
+    fi
+fi
+if [ "$NEED_NDK_FALLBACK" -eq 1 ]; then
+    LATEST_NDK="$(sdkmanager --list 2>/dev/null | grep -oE 'ndk;[0-9.]+' | sort -V | tail -1)"
+    if [ -z "$LATEST_NDK" ]; then
+        die "no NDK packages found in sdkmanager — check network or licenses"
+    fi
+    warn "using $LATEST_NDK instead"
+    NEEDED_PACKAGES=("${NEEDED_PACKAGES[@]/$NDK_PKG/$LATEST_NDK}")
+fi
 sdkmanager "${NEEDED_PACKAGES[@]}" >/dev/null \
     || die "sdkmanager install failed — check licenses and try again"
 
