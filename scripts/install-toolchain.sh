@@ -129,10 +129,12 @@ else
     chmod +x /tmp/dotnet-install.sh
 
     log "running dotnet-install.sh (channel ${DOTNET_VERSION})"
+    # NOTE: --channel accepts version strings (e.g. "9.0") or aliases ("LTS", "STS").
+    #       --quality is a separate axis with values: daily, preview, ga. LTS is
+    #       NOT a valid quality — use --channel LTS or omit --quality entirely.
     /tmp/dotnet-install.sh \
         --channel "${DOTNET_VERSION}" \
         --install-dir "$DOTNET_ROOT" \
-        --quality LTS \
         --no-path \
         || die ".NET install failed — see output above"
 
@@ -151,7 +153,7 @@ mkdir -p "$GODOT_HOME"
 #     misleadingly displays dots. Don't trust the rendered link; trust this string.
 GODOT_URL="https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_mono_linux_x86_64.zip"
 
-if [ -x "$GODOT_HOME/Godot_v${GODOT_VERSION}_mono_linux.x86_64" ]; then
+if [ -x "$GODOT_HOME/Godot_v${GODOT_VERSION}_mono_linux_x86_64/Godot_v${GODOT_VERSION}_mono_linux.x86_64" ]; then
     log "Godot already extracted at $GODOT_HOME, skipping"
 else
     log "downloading from $GODOT_URL (~103 MB)"
@@ -163,8 +165,11 @@ else
     rm -f /tmp/godot-mono.zip
 fi
 
-# Symlink to /usr/local/bin/godot for PATH convenience
-GODOT_BIN="$GODOT_HOME/Godot_v${GODOT_VERSION}_mono_linux.x86_64"
+# The zip's internal layout is:
+#   Godot_v4.7.2-stable_mono_linux_x86_64/         <- outer dir name uses UNDERSCORES
+#   └── Godot_v4.7.2-stable_mono_linux.x86_64      <- binary name uses DOT
+# Mind the asymmetry — don't "fix" one without the other.
+GODOT_BIN="$GODOT_HOME/Godot_v${GODOT_VERSION}_mono_linux_x86_64/Godot_v${GODOT_VERSION}_mono_linux.x86_64"
 if [ ! -x "$GODOT_BIN" ]; then
     die "expected Godot binary at $GODOT_BIN but it's missing — zip layout changed?"
 fi
