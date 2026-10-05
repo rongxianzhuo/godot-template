@@ -134,6 +134,34 @@ if [ -f "$LICENSE" ]; then
     sed -i "s|^Copyright (c) [0-9]\{4\}.*|Copyright (c) ${YEAR} ${APP_AUTHOR}|" "$LICENSE"
 fi
 
+# ─── 4/4 debug keystore ────────────────────────────────────────────────────
+# If the keystore file at $APP_KEYSTORE doesn't exist yet, generate the
+# standard Android debug keystore so the user can immediately run
+# `bash scripts/build-debug.sh` without manual keytool work.
+if [ -f "$APP_KEYSTORE" ]; then
+    log "keystore already exists at $APP_KEYSTORE, skipping generation"
+else
+    if ! command -v keytool >/dev/null; then
+        warn "keytool not found in PATH — install a JDK (e.g. apt install openjdk-17-jdk-headless)"
+        warn "then manually generate a debug keystore at $APP_KEYSTORE"
+    else
+        log "generating debug keystore at $APP_KEYSTORE"
+        mkdir -p "$(dirname "$APP_KEYSTORE")"
+        # Standard Android debug keystore: alias=androiddebugkey, storepass=android,
+        # keypass=android. dname fields can be anything for debug builds.
+        keytool -genkeypair \
+                -keystore "$APP_KEYSTORE" \
+                -storepass android \
+                -alias androiddebugkey \
+                -keypass android \
+                -dname "CN=Android Debug,O=Android,C=US" \
+                -keyalg RSA -keysize 2048 \
+                -validity 10000 \
+                || die "keytool generation failed — create keystore manually"
+        log "✅ keystore ready (alias=androiddebugkey, password=android)"
+    fi
+fi
+
 # ─── Verify ─────────────────────────────────────────────────────────────────
 log ""
 log "✅ configuration complete"
