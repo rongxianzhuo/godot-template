@@ -64,7 +64,7 @@ msgstr "Jugar"
 msgid "Quit"
 msgstr "Salir"
 
-# i18n key: hud.score_2 (3 placeholders)
+# i18n key: hud.score_detailed (3 placeholders)
 #: src/Features/Match3/Screens/EndScreen.cs:107
 msgid "Score: {0} — {1} of {2} moves used"
 msgstr "Puntuación: {0} — {1} de {2} movimientos usados"
@@ -78,13 +78,13 @@ msgstr "60 Niveles · 3 Mundos"
 # i18n key: settings.title
 #. Tr() translation call
 #: src/Features/Settings/SettingsScreen.cs:96
-msgid "settings.title"
+msgid "Settings"
 msgstr "Configuración"
 
 # i18n key: settings.language
 #. Tr() translation call
 #: src/Features/Settings/SettingsScreen.cs:118
-msgid "settings.language"
+msgid "Language"
 msgstr "Idioma"
 
 # i18n key: settings.apply

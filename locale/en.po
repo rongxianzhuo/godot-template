@@ -10,14 +10,25 @@ msgstr ""
 
 # i18n key: brand.magic_match
 #. Text assignment
-#: src/Features/Match3/Screens/TitleScreen.cs:63
+#: src/Features/Match3/Screens/TitleScreen.cs:67
+msgid "Magic Match"
+msgstr "Magic Match"
+
+# i18n key: brand.magic_match_v2
+#. .tscn Text property (Godot auto_translate_mode=1)
+#: assets/scenes/SplashScreen.tscn:37
 msgid "Magic Match"
 msgstr "Magic Match"
 
 # i18n key: endscreen.game_over
 #. Text assignment
-#: src/Features/Match3/Screens/EndScreen.cs,
-#: src/Features/Match3/Screens/EndScreen.cs:102:66
+#: src/Features/Match3/Screens/EndScreen.cs:66
+msgid "Game Over"
+msgstr "Game Over"
+
+# i18n key: endscreen.game_over_v2
+#. Text assignment
+#: src/Features/Match3/Screens/EndScreen.cs:107
 msgid "Game Over"
 msgstr "Game Over"
 
@@ -35,87 +46,102 @@ msgstr "Play Again"
 
 # i18n key: endscreen.you_won
 #. Text assignment
-#: src/Features/Match3/Screens/EndScreen.cs:102
+#: src/Features/Match3/Screens/EndScreen.cs:107
 msgid "You Won!"
 msgstr "You Won!"
 
 # i18n key: hud.moves (1 placeholder)
 #. Text assignment
-#: src/Features/Match3/Screens/GameScreen.cs,
-#: src/Features/Match3/Screens/GameScreen.cs:175:95
+#: src/Features/Match3/Screens/GameScreen.cs:101
+msgid "Moves: {0}"
+msgstr "Moves: {0}"
+
+# i18n key: hud.moves_v2 (1 placeholder)
+#. Text assignment
+#: src/Features/Match3/Screens/GameScreen.cs:188
 msgid "Moves: {0}"
 msgstr "Moves: {0}"
 
 # i18n key: hud.score (1 placeholder)
 #. Text assignment
-#: src/Features/Match3/Screens/EndScreen.cs,
-#: src/Features/Match3/Screens/GameScreen.cs:86,
-#: src/Features/Match3/Screens/GameScreen.cs:174:75
+#: src/Features/Match3/Screens/EndScreen.cs:75
 msgid "Score: {0}"
 msgstr "Score: {0}"
 
-# i18n key: hud.score_2 (3 placeholders)
+# i18n key: hud.score_detailed (3 placeholders)
 #. Tr() translation call
-#: src/Features/Match3/Screens/EndScreen.cs:107
+#: src/Features/Match3/Screens/EndScreen.cs:112
 msgid "Score: {0} — {1} of {2} moves used"
 msgstr "Score: {0} — {1} of {2} moves used"
 
+# i18n key: hud.score_v2 (1 placeholder)
+#. Text assignment
+#: src/Features/Match3/Screens/GameScreen.cs:92
+msgid "Score: {0}"
+msgstr "Score: {0}"
+
+# i18n key: hud.score_v3 (1 placeholder)
+#. Text assignment
+#: src/Features/Match3/Screens/GameScreen.cs:187
+msgid "Score: {0}"
+msgstr "Score: {0}"
+
+# i18n key: splash.subtitle
+#. .tscn Text property (Godot auto_translate_mode=1)
+#: assets/scenes/SplashScreen.tscn:59
+msgid "60 Levels · 3 Themes"
+msgstr "60 Levels · 3 Themes"
+
 # i18n key: title.play
 #. Tr() translation call
-#: src/Features/Match3/Screens/TitleScreen.cs:74
+#: src/Features/Match3/Screens/TitleScreen.cs:78
 msgid "Play"
 msgstr "Play"
 
 # i18n key: title.quit
 #. Tr() translation call
-#: src/Features/Match3/Screens/TitleScreen.cs:81
+#: src/Features/Match3/Screens/TitleScreen.cs:85
 msgid "Quit"
 msgstr "Quit"
 
-# i18n key: splash.subtitle
-#. Text assignment (splash B-v3 scene)
-#: src/Features/Splash/SplashScreen.tscn
-msgid "60 Levels · 3 Themes"
-msgstr "60 Levels · 3 Themes"
-
 # i18n key: settings.title
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:96
-msgid "settings.title"
+#: src/Features/Settings/SettingsScreen.cs:118
+msgid "Settings"
 msgstr "Settings"
 
 # i18n key: settings.language
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:118
-msgid "settings.language"
+#: src/Features/Settings/SettingsScreen.cs:140
+msgid "Language"
 msgstr "Language"
 
 # i18n key: settings.apply
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:159
+#: src/Features/Settings/SettingsScreen.cs:181
 msgid "Apply"
 msgstr "Apply"
 
 # i18n key: settings.cancel
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:171
+#: src/Features/Settings/SettingsScreen.cs:193
 msgid "Cancel"
 msgstr "Cancel"
 
 # i18n key: settings.english
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:137
+#: src/Features/Settings/SettingsScreen.cs:159
 msgid "English"
 msgstr "English"
 
 # i18n key: settings.spanish
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:138
+#: src/Features/Settings/SettingsScreen.cs:160
 msgid "Español"
 msgstr "Español"
 
 # i18n key: settings.portuguese
 #. Tr() translation call
-#: src/Features/Settings/SettingsScreen.cs:139
+#: src/Features/Settings/SettingsScreen.cs:161
 msgid "Português"
 msgstr "Português"

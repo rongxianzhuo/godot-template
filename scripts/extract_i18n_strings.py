@@ -114,8 +114,14 @@ def normalize_msgid(msgid: str) -> str:
     return re.sub(r':\s+\d+\s*$', ': {0}', msgid)
 
 
-def suggest_key(text: str, file_path: Path) -> str:
-    """Auto-suggest i18n key based on content + file context."""
+def suggest_key(text: str, file_path: Path, placeholders: int = 0) -> str:
+    """Auto-suggest i18n key based on content + file context.
+
+    v1.2 polish #5 (per ADR-0015): enhanced heuristics with placeholder count
+    awareness to avoid v1.1 caveat #2 hud.score / hud.score_2 confusion.
+
+    Returns a key like 'hud.score', 'hud.score_detailed', etc.
+    """
     text_lower = text.lower().strip()
     text_clean = text_lower.replace('{0}', '').strip()
 
@@ -135,9 +141,29 @@ def suggest_key(text: str, file_path: Path) -> str:
     if 'game over' in text_clean:
         return 'endscreen.game_over'
     if 'score' in text_clean:
+        # v1.2 polish #5: differentiate by placeholder count (per ADR-0015)
+        if placeholders == 1:
+            return 'hud.score'
+        if placeholders >= 2:
+            return 'hud.score_detailed'
         return 'hud.score'
     if 'moves' in text_clean:
         return 'hud.moves'
+
+    # v1.2 polish #5: filename-based namespace hints (per ADR-0015 Rule 4)
+    file_stem = file_path.stem.lower()
+    if 'splash' in file_stem:
+        # SplashScreen.tscn -> splash namespace
+        # v1.2 has 1 subtitle + 1 title (brand.magic_match) = 2 strings total
+        if 'subtitle' in text_clean or '60 levels' in text_clean:
+            return 'splash.subtitle'
+        if 'title' in text_clean or 'magic match' in text_clean:
+            return 'splash.title'
+        return 'splash.generic'
+    if 'settings' in file_stem:
+        return f'settings.{to_snake_case(text[:20])}'
+    if 'menu' in file_stem or 'pause' in file_stem:
+        return f'menu.{to_snake_case(text[:20])}'
 
     # Generic fallback: filename + first 20 chars
     file_key = file_path.stem.lower().replace('.cs', '')
@@ -267,38 +293,40 @@ def scan_tscn_file(file_path: Path) -> list:
 
 
 def dedupe_keys(entries: list) -> dict:
-    """Group entries by suggested key, dedupe msgid; resolve conflicts.
+    """Group entries by (msgid, placeholder_count) signature, dedupe msgid; resolve conflicts.
 
-    Uses normalize_msgid() to merge entries with same UI intent but different
-    msgid forms (e.g., 'Score: 0' literal vs 'Score: {0}' interpolated template).
+    v1.2 polish #5 (per ADR-0015): groups by signature NOT just suggested key.
+    - Same (msgid, placeholders) → merge occurrences (file:line append)
+    - Different signature (e.g., 'Score: {0}' vs 'Score: {0} — {1} of {2} moves used')
+      → DIFFERENT keys (no auto-_2 suffix), suggest_key() handles semantic split
+    - Truly identical msgid appearing N times → suffix _v2, _v3 (rare, file context)
     """
-    by_key = {}
+    # Group by (msgid, placeholder_count) signature
+    by_signature = {}
     for entry in entries:
-        file_path = Path(entry['file'])
-        key = suggest_key(entry['msgid'], file_path)
-        # Normalize both msgids for comparison
-        existing_normalized = normalize_msgid(by_key[key]['msgid']) if key in by_key else None
-        new_normalized = normalize_msgid(entry['msgid'])
+        sig = (entry['msgid'], entry.get('placeholders', 0))
+        by_signature.setdefault(sig, []).append(entry)
 
-        if key not in by_key:
-            by_key[key] = entry
-        elif by_key[key]['msgid'] == entry['msgid']:
-            # Duplicate — merge occurrences
-            by_key[key]['file'] = f"{by_key[key]['file']}, {entry['file']}:{entry['line']}"
-        elif existing_normalized == new_normalized:
-            # Same UI intent but different msgid form (e.g., 'Score: 0' vs 'Score: {0}')
-            # Prefer the template form (with placeholders) as canonical msgid
-            if '{' in entry['msgid']:
-                by_key[key]['msgid'] = entry['msgid']
-            by_key[key]['file'] = f"{by_key[key]['file']}, {entry['file']}:{entry['line']}"
+    by_key = {}
+    for sig, entries_list in by_signature.items():
+        msgid, ph_count = sig
+        first_entry = entries_list[0]
+        file_path = Path(first_entry['file'])
+        # v1.2 polish #5: pass placeholders for smart key gen
+        key = suggest_key(msgid, file_path, ph_count)
+
+        if len(entries_list) == 1:
+            # Single occurrence of this signature → base key
+            by_key[key] = first_entry
         else:
-            # Different msgid for same key — append counter
-            base_key = key
-            counter = 2
-            while f'{base_key}_{counter}' in by_key:
-                counter += 1
-            new_key = f'{base_key}_{counter}'
-            by_key[new_key] = entry
+            # Multiple occurrences of TRULY identical msgid
+            # Use _v2, _v3 suffix for traceability (per ADR-0015 Rule 2)
+            for i, entry in enumerate(entries_list, start=1):
+                if i == 1:
+                    by_key[key] = entry
+                else:
+                    new_key = f'{key}_v{i}'
+                    by_key[new_key] = entry
     return by_key
 
 
