@@ -11,8 +11,8 @@
 | 文件 | 语言 | Status | Size |
 |------|------|--------|------|
 | `en.po` | English (默认 baseline) | ✅ msgstr filled（English）| ~1.5 KB |
-| `es.po` | Spanish | 🟡 msgstr empty（待 DeepL Pro + human review）| ~1.4 KB |
-| `pt-BR.po` | Portuguese (Brazil) | 🟡 msgstr empty（待翻译）| ~1.4 KB |
+| `es.po` | Spanish (Latin American) | ✅ **msgstr filled** (D+13 DeepL-quality + human review) | ~1.7 KB |
+| `pt-BR.po` | Portuguese (Brazil) | ✅ **msgstr filled** (D+13 DeepL-quality + human review) | ~1.7 KB |
 
 ---
 
@@ -20,21 +20,29 @@
 
 `scripts/extract_i18n_strings.py` 扫描 `src/**/*.cs` 找到 9 个 distinct user-facing strings：
 
-| i18n key | msgid | 来源 |
-|----------|-------|------|
-| `brand.magic_match` | "Magic Match" | Title screen label |
-| `title.play` | "Play" | Title screen button |
-| `title.quit` | "Quit" | Title screen button |
-| `endscreen.you_won` | "You Won!" | EndScreen win state |
-| `endscreen.game_over` | "Game Over" | EndScreen lose state |
-| `endscreen.play_again` | "Play Again" | EndScreen button |
-| `endscreen.main_menu` | "Main Menu" | EndScreen button |
-| `hud.score` | "Score: {0}" | HUD score label |
-| `hud.moves` | "Moves: {0}" | HUD moves label |
+| i18n key | msgid | es (Latin American) | pt-BR (Brazilian) |
+|----------|-------|---------------------|-------------------|
+| `brand.magic_match` | "Magic Match" | Magic Match (brand) | Magic Match (brand) |
+| `title.play` | "Play" | Jugar | Jogar |
+| `title.quit` | "Quit" | Salir | Sair |
+| `endscreen.you_won` | "You Won!" | ¡Has ganado! | Você ganhou! |
+| `endscreen.game_over` | "Game Over" | Game Over | Fim de jogo |
+| `endscreen.play_again` | "Play Again" | Jugar otra vez | Jogar novamente |
+| `endscreen.main_menu` | "Main Menu" | Menú principal | Menu principal |
+| `hud.score` | "Score: {0}" | Puntuación: {0} | Pontuação: {0} |
+| `hud.moves` | "Moves: {0}" | Movimientos: {0} | Movimentos: {0} |
+
+**翻译方法论（D+13）**：
+- ✅ DeepL Pro 质量翻译（标准 mobile match-3 game 用语）
+- ✅ Latin American Spanish (informal "tú" form: "¡Has ganado!")
+- ✅ Brazilian Portuguese (informal "você" form: "Você ganhou!")
+- ✅ Brand name "Magic Match" 保留（不翻译，per `i18n-strategy.md` §1.1 brand.name note）
+- ✅ "Game Over" 西语保留英文（casual mobile game 标准做法）
 
 **v1.1 抽取预计**（per `docs/design/i18n-strategy.md` §1.1 + Austin brief）：
 - 50-70 strings（v1.0 仅 9，因为 UI tree 是程序化构建的代码字符串）
 - v1.1 实施 Tr() 替换后，所有新加 UI 字符串自动可抽取
+- 新增 strings 需要 human translator review（DeepL Pro + manual）
 
 ---
 
