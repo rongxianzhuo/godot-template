@@ -36,6 +36,7 @@
 | 0011 | App Bundle per-language split (v1.2 polish #1) | 📋 Reserved | D+23 reserved |
 | [0012](0012-per-theme-ttf.md) | Per-Theme TTF Overrides v1.2 phase 1 (weight remap) | ✅ Accepted | 2026-10-08 |
 | [0013](0013-splash-i18n.md) | Splash Screen i18n (v1.2 polish #3) | ✅ Accepted | 2026-10-09 |
+| [0014](0014-language-picker.md) | Language Picker + Settings Screen (v1.2 polish #4) | ✅ Accepted | 2026-10-10 |
 
 ---
 
