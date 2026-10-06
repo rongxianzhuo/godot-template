@@ -20,6 +20,7 @@ config/icon="res://assets/icons/icon.svg"
 
 GameFramework="*res://addons/godot-framework/src/GameFramework/Game.cs"
 UIManager="*res://addons/godot-framework/src/GameFramework/UIManager.cs"
+EventBus="*res://addons/godot-framework/src/GameFramework/EventBus.cs"
 
 [android]
 
