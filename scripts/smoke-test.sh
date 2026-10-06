@@ -37,13 +37,19 @@ fi
 log "using godot: $($GODOT_BIN --version 2>&1 | head -1)"
 
 # ─── Run smoke test ───────────────────────────────────────────────────────────
+# Note: --quit-after takes main-loop ITERATIONS (frames), NOT seconds. At 60 FPS,
+# 1800 frames = ~30 seconds wall-clock — enough headroom for the W3+ splash
+# (2s on SplashScreen.tscn) + bootstrap + 12-assertion smoke test.
+# Pre-W3 (Main.tscn as run/main_scene) used --quit-after 30 because bootstrap
+# was instant. After SplashScreen was added in W3, 30 frames (0.5s) wasn't
+# enough — splash's SceneTreeTimer.Timeout would never fire.
 GODOT_ARGS=(
     --headless
     --path "$REPO_ROOT"
-    --quit-after 30
+    --quit-after 1800
 )
 
-log "running MATCH3_SMOKE_TEST=1 godot --headless --quit-after 30"
+log "running MATCH3_SMOKE_TEST=1 godot --headless --quit-after 1800 (1800 frames ≈ 30s @ 60fps)"
 log "(Godot will import assets on first run — may take 30-60 sec)"
 
 # Capture all output. The smoke test prints PASS/FAIL to stdout; any stderr
