@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://christine_hud_heart_v1"
-path="res://.godot/imported/hud_heart.png-00000000000000000000000000000006.ctex"
+uid="uid://sta00i0aum15"
+path="res://.godot/imported/hud_heart.png-6552a84211def88d3e9be716d67b864b.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/ui/hud_heart.png"
-dest_files=["res://.godot/imported/hud_heart.png-00000000000000000000000000000006.ctex"]
+dest_files=["res://.godot/imported/hud_heart.png-6552a84211def88d3e9be716d67b864b.ctex"]
 
 [params]
 
