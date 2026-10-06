@@ -273,15 +273,28 @@ Jacob 在 v1.0 实现时按这个表查找颜色。v1.0 ship 必须保证 **Fore
 - ✅ Casual 玩家对字体的容忍度高于 hardcore
 - ✅ v1.1 可升级（CJK / 多语言时一起加）
 
+**v1.1 增量**（per `docs/design/ttf-font-research.md` §1, Mark D+11 拍板）：
+- ✅ **Fredoka Bold**（标题/display）+ **Nunito Regular/Medium/Bold**（UI/body）
+- ✅ License: SIL OFL 1.1（商用 + 应用内嵌 + 修改）
+- ✅ Subset: Latin + Latin Extended-A（~319 chars，pyftsubset）→ 5 fonts ~95 KB total
+- ✅ Godot 集成: `FontFile.LoadDynamicFont()` + `Theme.SetFont("default_font")`
+- ⏳ v2.0 加 CJK（Noto Sans SC/JP/KR subset ~2.7 MB）
+- 完整决策依据 / 风险评估 / 实施 checklist：见 `docs/design/ttf-font-research.md`
+
 ### 4.2 字体规格（v1.0）
 
-| Token | size | weight | 用途 |
-|-------|------|--------|------|
-| `text_xl` | 36 px | Bold | 标题（"Forest" / "Desert" / "Ocean"）|
-| `text_lg` | 24 px | Bold | 副标题 / level number |
-| `text_md` | 18 px | Regular | 按钮文字 / 主 UI |
-| `text_sm` | 14 px | Regular | 提示 / 标签 |
-| `text_xs` | 12 px | Regular | 版权 / 调试 |
+| Token | size | weight | 字体 v1.0 (Godot default) | 字体 v1.1 (TTF upgrade) |
+|-------|------|--------|---------------------------|--------------------------|
+| `text_xl` | 36 px | Bold | Godot default | **Fredoka Bold** |
+| `text_lg` | 24 px | Bold | Godot default | **Nunito Bold** |
+| `text_md` | 18 px | Regular | Godot default | **Nunito Regular** |
+| `text_sm` | 14 px | Regular | Godot default | **Nunito Regular** |
+| `text_xs` | 12 px | Regular | Godot default | **Nunito Regular** |
+| `hud_number` | 28 px | Bold | Godot default | **Nunito Bold** |
+| `button_label` | 32 px | SemiBold | Godot default | **Nunito Bold** |
+| `theme_banner` | 36 px | Bold | Godot default | **Nunito Bold** |
+
+> **v1.1 升级注意事项**：Fredoka Bold 视觉粗度比 Godot default Bold 略大 5-10%（"casual magic" 风格）。部分场景字号需下调 2-4 px（如 theme banner 36→32）。
 
 ### 4.3 文字颜色（与主题联动）
 
@@ -419,12 +432,20 @@ process/premult_alpha = false  # 不预乘（runtime 兼容）
 
 | 组件 | 说明 | 关键资产 |
 |------|------|----------|
+| **SplashScreen** 🆕 v1.1 | 冷启动屏（1.5-2.5s）| bg_title（复用）+ icon + Magic Match 标题 + 副标题 + 5-dot loading |
 | **TitleScreen** | 启动屏 / 主菜单 | bg_title + icon + button_normal |
 | **LevelSelectScreen** | 关卡选择（5 列 × 4 行 = 20 关）| level_select_bg + button_normal + star_on/off |
 | **GameplayScreen** | 游戏主屏（6×8 棋盘）| bg_game + 6 gem + hud_heart + coin |
 | **EndScreen** | 结算（Win / Lose）| bg_game + star_on/off + button_normal |
 | **ThemeBanner** | 跨主题 banner（overlay 1.5s）| 仅颜色，无 sprite |
 | **Modal** | 弹窗 / 暂停 / 设置 | 半透明黑蒙层 + button_normal |
+| **LanguagePicker** 🆕 v1.1 | Settings 内的语言切换（en / es / pt-BR）| 仅文字 + 下拉 UI |
+
+> **SplashScreen 设计细节**（per `docs/design/splash-screen-design.md` + `splash-screen-build-spec.md`）：
+> - v1.0 ship 仍用 `icon.svg` 临时（per Mark D+5 决策）
+> - v1.1 实施方案 B（全屏沉浸式，0 新图，Jacob 1 天实施）
+> - 关键 layout：icon y=102 (280×280) + "Magic Match" gold title y=422 (64 px) + 副标题 y=538 + 5 loading dots y=1126
+> - 视觉目标：见 `/shared/christine-splash-production-target.png`
 
 ### 9.2 局部组件
 
@@ -514,6 +535,7 @@ process/premult_alpha = false  # 不预乘（runtime 兼容）
 | Star pop | `Tween.Scale()` 1→1.2→1 | 0.3 s | EaseInOut |
 | Theme banner | `Tween.ModulateAlpha()` | 1.5 s | SineInOut |
 | Button hover | modulate 1.0 → 1.1 | 0.1 s | Linear |
+| **Splash 5-dot loading** 🆕 v1.1 | `Tween.ModulateAlpha()` 0.3↔1.0 + 0.1s stagger | 1.2 s/cycle × 5 dots | SineInOut |
 
 ### 12.3 粒子 / 特效（v1.0 P1）
 
@@ -702,11 +724,151 @@ fork 时只改 hex（每主题 7 个）+ 同步改 `ThemeColors.Get()` switch，
 
 ### A.5 改字体（v1.1 升级 TTF）
 
-`assets/fonts/` 加 `.ttf` 文件 → Godot `FontFile` 资源 → `theme.SetFont("default_font", font)`。预计 v1.1 增加 ~1-2 MB 包大小。
+**默认 fork 字体组合**（per `docs/design/ttf-font-research.md` Mark D+11 拍板）：
+
+| 字体 | 角色 | 文件 |
+|------|------|------|
+| **Fredoka Bold** | 标题 / display | `assets/fonts/Fredoka-Bold-subset.ttf` (~10 KB) |
+| **Fredoka Regular** | subtitle | `assets/fonts/Fredoka-Regular-subset.ttf` (~10 KB) |
+| **Nunito Bold** | HUD 数字 / button label | `assets/fonts/Nunito-Bold-subset.ttf` (~25 KB) |
+| **Nunito Medium** | button label | `assets/fonts/Nunito-Medium-subset.ttf` (~25 KB) |
+| **Nunito Regular** | body / UI | `assets/fonts/Nunito-Regular-subset.ttf` (~25 KB) |
+| **总计** | — | **~95 KB**（Latin + Latin Extended-A subset）|
+
+**集成步骤**：
+
+1. **下载 TTF**：从 [Google Fonts](https://fonts.google.com/specimen/Fredoka) 下载 Fredoka（5 weights）+ Nunito（8 weights）
+2. **Subset**：用 `pyftsubset`（fontTools）subset 到 `U+0020-007E,U+00A0-00FF,U+0100-017F`（Latin + Latin Extended-A）
+3. **放置**：`assets/fonts/` 下（保留 `OFL.txt` 合规文件）
+4. **Godot 集成**：创建 `src/Core/ThemeBuilder.cs`，按 §4 字体规格表设置 `Theme.SetFont()`
+5. **应用**：每个 scene 加 `theme = ThemeBuilder.BuildMagicTheme()`
+
+**估算工作量**：0.5-0.7 天（Jacob 主导 + Christine 字体选型）
+
+**替换字体**（如不喜欢 Fredoka / Nunito）：
+
+| 候选 | 风格 | License | 适用 |
+|------|------|---------|------|
+| Baloo 2 Bold | Display, bouncy | OFL 1.1 | 更厚重的"magical"调性 |
+| Quicksand | Geometric rounded | OFL 1.1 | 更几何少 magic |
+| Comfortaa | Display rounded | OFL 1.1 | display only |
+| Poppins | Sans-serif | OFL 1.1 | 中性 / 不太 magic |
+
+**风险**：
+
+- ⚠️ Android 设备字体渲染差异 — 真机测试 ×3（Samsung / Pixel / Xiaomi）
+- ⚠️ Godot FontFile API 兼容性 — 已在 Godot 4.7 stable 验证
+- ⚠️ Cold start +500ms（splash 时间延长）
+- 详细：见 `docs/design/ttf-font-research.md` §5.3
+
+**Fallback 策略**：如 v1.1 实施出问题，可保留 TTF 文件但 theme 不引用 → 0 包大小成本回到 Godot default。
+
+### A.6 改文案 / 加多语言（v1.1 引入 i18n）
+
+**默认 fork 语言**（per `docs/design/i18n-strategy.md` Mark D+12 拍板）：
+
+| 语言 | Code | 文件 |
+|------|------|------|
+| **English** | `en` | `locale/en.po`（默认 baseline）|
+| **Spanish** | `es` | `locale/es.po` |
+| **Portuguese-Brazil** | `pt-BR` | `locale/pt-BR.po` |
+
+**i18n key 命名规范**（lowercase + dot-separated）：
+
+```csharp
+// ✅ good
+GetNode<Label>("Title").Text = Tr("title.play");
+GetNode<Label>("Score").Text = Tr("hud.score");
+Tr("endscreen.stars", starsEarned);  // 占位符 {0}
+
+// ❌ bad
+Tr("PLAY_BUTTON");
+Tr("titlePlay");
+Tr("title.play.button.label");
+```
+
+**字符串抽取步骤**：
+
+1. **扫描**：`python scripts/extract_tr_strings.py src/` → 自动生成 `locale/en.po`
+2. **替换**：`Label.Text = "Play"` → `Label.Text = Tr("title.play")`（C# 所有 scene 文件）
+3. **翻译**：Weblate hosted 或人工 → `locale/es.po` + `locale/pt-BR.po`
+4. **验证**：GitHub Actions `validate_translations.yml`（msgfmt + msgmerge + completeness）
+5. **运行时**：Godot `TranslationServer.SetLocale("es")` → 自动加载 `locale/es.po`
+
+**估算工作量**：0.5-0.7 天（Jacob 主导 + Christine 翻译协调）
+
+**加新语言**（v2.0）：
+
+| 语言 | Code | Font | Bundle size |
+|------|------|------|-------------|
+| 中文简体 | `zh-CN` | Noto Sans SC subset | +700 KB |
+| 日文 | `ja` | Noto Sans JP subset | +700 KB |
+| 韩文 | `ko` | Noto Sans KR subset | +600 KB |
+| 德语 | `de` | Latin (Nunito) | +5 KB |
+| 法语 | `fr` | Latin (Nunito) | +5 KB |
+
+**包大小影响**：v1.1 (3 lang Latin) +120 KB；v2.0 (8 lang + CJK) +2.7 MB
+
+**Android App Bundle per-language split**：用户只下载自己语言，节省 19-25% 下载
+
+**详细**：见 `docs/design/i18n-strategy.md`
+
+---
+
+## 附录 A.7 改 splash screen（v1.1 实施方案 B）
+
+**默认 fork splash**：实施方案 B（全屏沉浸式，per `docs/design/splash-screen-design.md` + `splash-screen-build-spec.md`）
+
+**集成步骤**：
+
+1. 创建 `assets/scenes/SplashScreen.tscn`（按 build spec §3.1 scene tree）
+2. 引用 `assets/backgrounds/bg_title.png`（复用 D+7）+ `assets/icons/icon.svg`
+3. 实现 5-dot loading Tween（§12.2）
+4. 更新 `export_presets.cfg` 5 个 density 行引用 SplashScreen.tscn
+5. 测试 cold-start 流程：splash 显示 → 跳转到 TitleScreen
+
+**v1.0 ship 仍用 `icon.svg` 临时方案**（per Mark D+5 决策）
 
 ---
 
 ## 附录 B：变更日志
+
+### v1.1 (2026-10-06, Christine) — D+12 prep
+
+**状态**：prep（v1.1 实施前 final，由 Jacob 拍板 ship 时间表）
+
+**D+10-D+12 累计决策整合**：
+
+- **§4 字体**：v1.1 增量——Fredoka Bold + Nunito Regular/Medium/Bold（per `ttf-font-research.md` Mark D+11 拍板）
+  - 字体规格表扩展 8 行（含 hud_number / button_label / theme_banner）
+  - 替换字体候选清单（Baloo 2 / Quicksand / Comfortaa / Poppins）
+  - Fallback 策略
+- **§9.1 全屏组件**：+ SplashScreen（v1.1 实施方案 B）+ LanguagePicker（v1.1 i18n Settings）
+- **§12.2 动效**：+ Splash 5-dot loading Tween
+- **附录 A.5 字体升级**：扩展为完整 fork-friendly 指南（默认 Fredoka + Nunito + 5-step 集成步骤 + 4 候选替换 + 4 风险 + fallback）
+- **附录 A.6 i18n 抽取指南**（NEW）：默认 3 语言（en/es/pt-BR）+ i18n key 命名规范 + 5-step 抽取流程 + v2.0 5 语言扩展
+- **附录 A.7 splash screen 指南**（NEW）：5-step 集成流程
+
+**关联文档**（D+10-D+12 同步产出）：
+
+- `docs/design/splash-screen-design.md`（v0.1, 232 lines）—— splash 3 方案 ASCII + 推荐 B
+- `docs/design/splash-screen-build-spec.md`（v0.1, 243 lines）—— pixel-precise build spec for Jacob
+- `docs/design/ttf-font-research.md`（v0.1, 427 lines）—— 4 字体候选 + 风险评估
+- `docs/design/i18n-strategy.md`（v0.1, 579 lines）—— v1.1 3 语言 + v2.0 8 语言 + CJK 字体 + App Bundle split
+- `docs/RELEASE_NOTES_v1.0.md`（v1.0, 224 lines）—— Google Play store + founder release notes
+
+**v1.1 ship 总包大小影响**：
+- +95 KB（Fredoka + Nunito subset）
+- +25 KB（3 语言 PO files）
+- +0 KB（splash 复用 bg_title + icon.svg，0 新图）
+- **总计**：v1.0 (8.0 MB) → v1.1 (~8.12 MB) → v1.0 ship 节省 32% 预算保持
+
+**未决**（v1.1 实施前 Mark 拍板）：
+- splash 实施方案 B 默认 / 备选 B-v2 / B-v3（Jacob 实施时决定）
+- 4 P1 sprite AI 重制（v0.2 polish backlog #6）激活？
+- gem_purple full align #88489B（v0.2 polish backlog #7）激活？
+
+---
 
 ### v1.0 (2026-10-06, Christine)
 
