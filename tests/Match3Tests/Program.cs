@@ -262,7 +262,12 @@ internal static class Program
 
         var state = new GameState();
         var log = new List<GamePhase>();
+        // PhaseChanged is marked [Obsolete] after W2 EventBus migration,
+        // but the test still uses it as a verification mechanism (unit test
+        // can't access EventBus.Instance which requires Godot autoload).
+#pragma warning disable CS0618 // PhaseChanged is obsolete; still functional
         state.PhaseChanged += p => log.Add(p);
+#pragma warning restore CS0618
 
         Assert(state.Phase == GamePhase.Title, "initial phase = Title");
 
