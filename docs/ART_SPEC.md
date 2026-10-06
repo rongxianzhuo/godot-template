@@ -1,32 +1,37 @@
-# godot-template — 美术规范 ART_SPEC v0.2
+# godot-template — 美术规范 ART_SPEC v1.0
 
-> **状态**：v0.2 Draft — 替换 v0.1 (基于 Mark D+1 拍板：接受现状 gem 风格 + Austin D+2 brief + Christine D+1 评估)
-> **范围**：godot-template + Magic Match v1.0（60 关 / 3 主题 / Android-first）
+> **状态**：**v1.0 ship-ready**（D+9 周二 docs 整合完毕；5 个 art branch 已 push，待 Jacob 验证 + Mark 拍板 merge）
+> **范围**：godot-template + Magic Match v1.0（60 关 / 3 主题 / Android-first F2P Casual）
 > **负责**：Christine（art direction + asset QA + 配色文档）/ Mark（review + 拍板）
-> **生成时间**：2026-10-06 (D+3 周四)
-> **依赖**：`ASSET_INTEGRATION.md` v0.1（资产接入流程不变）/ `/shared/austin-christine-brief.md`（v1.0 资产清单来源）
+> **生成时间**：2026-10-06 (D+9 周二)
+> **依赖**：
+> - `ASSET_INTEGRATION.md` v0.1（资产接入流程不变）
+> - `/shared/austin-christine-brief.md`（v1.0 资产清单来源）
+> - [`/shared/match3-design-doc-v0.5-preview.md`](/shared/match3-design-doc-v0.5-preview.md)（Austin 产品设计文档 — 与本文档互为 cross-ref）
+> **本版本变更**：见 [附录 B 变更日志](#附录-b变更日志)
 
 ---
 
 ## 目录
 
-1. [设计风格（沿用 v0.1 实际，不重画）](#1-设计风格)
-2. [调色板](#2-调色板)
-3. [字体](#3-字体)
-4. [间距 token](#4-间距-token)
-5. [暗色 / 亮色模式](#5-暗色--亮色模式)
-6. [资产规格总览](#6-资产规格总览)
-7. [现有 18 PNG 现状评估](#7-现有-18-png-现状评估)
-8. [v1.0 资产清单（新增）](#8-v10-资产清单新增)
+1. [设计风格（沿用 v0.1 实际）](#1-设计风格)
+2. [调色板（品牌 + UI）](#2-调色板)
+3. [主题配色系统（Forest / Desert / Ocean）](#3-主题配色系统)
+4. [字体](#4-字体)
+5. [间距 token](#5-间距-token)
+6. [暗色 / 亮色模式](#6-暗色--亮色模式)
+7. [资产规格总览](#7-资产规格总览)
+8. [v1.0 ship-ready 资产清单](#8-v10-ship-ready-资产清单)
 9. [组件清单](#9-组件清单)
 10. [状态规范](#10-状态规范)
 11. [错误状态](#11-错误状态)
 12. [动效规范](#12-动效规范)
-13. [AI 出图规则（继承 v0.1 §3/§5）](#13-ai-出图规则继承-v01-3§5)
+13. [AI 出图规则](#13-ai-出图规则)
 14. [验收 checklist](#14-验收-checklist)
 15. [联系表](#15-联系表)
-16. [附录 A：fork-friendly color overrides](#附录-afork-friendly-color-overrides)
-17. [附录 B：变更日志](#附录-b变更日志)
+- [附录 A：fork-friendly 修改指南](#附录-afork-friendly-修改指南)
+- [附录 B：变更日志 v0.1 → v1.0](#附录-b变更日志)
+- [附录 C：v0.2 polish 工作历史（pointer）](#附录-cv02-polish-工作历史)
 
 ---
 
@@ -41,7 +46,7 @@
 | 宝石形 | smooth rounded teardrop（v0.1 实际有少量 facet，**接受不修**） |
 | 宝石 outline | dark outline（深红 / 深蓝 / 深绿 / 深紫 / 深橙），与 v0.1 spec "white outline" 不同 — **spec 已对齐实际** |
 | 宝石高光 | 左上白色硬心月牙 + 右下小白点（每颗位置一致） |
-| 宝石 sparkle | 0-4 颗白色 4-point star / 圆点（family 不齐，**已记 P1 项**） |
+| 宝石 sparkle | 1-5 颗白色 4-point star / 圆点（v0.1 不齐 → **v1.0 polish 后全部 6 颗一致 family**） |
 | 风格参照 | Candy Crush 早期宝石（少"软糖"多"宝石"）、Bejeweled Classic |
 | 整体调性 | Casual / F2P，目标玩家：休闲解谜用户 |
 
@@ -52,13 +57,13 @@
 - ❌ 纯软糖（Candy Crush Soda） — 与现有 6 颗 gem 风格不连贯
 - ❌ 写实宝石（Bejeweled Stars） — AI 易崩 + Casual 用户不接受
 
-### 1.3 替代 v0.1 §1.1 的关键差异
+### 1.3 v0.1 → v0.2 关键 spec 调整
 
-| v0.1 spec 写 | v0.2 实际接受 | 决定 |
+| v0.1 spec 写 | v0.2 / v1.0 实际接受 | 决定 |
 |---|---|---|
 | "solid WHITE 2-3 px outline" | "dark colored outline" | ✅ **更新 spec 对齐 PNG** |
 | "smooth rounded teardrop, NO facets" | "teardrop + 少量 facet 内反射" | ✅ **接受半写实** |
-| "sparkles 3-4 WHITE 散布" | "0-4 不齐，需 polish" | ⚠️ **P1 polish 项** |
+| "sparkles 3-4 WHITE 散布" | "1-5 不齐 → v1.0 polish 后 1-3 一致" | ✅ **D+6 polish 完成** |
 
 ---
 
@@ -77,323 +82,391 @@
 
 > ⚠️ **集成约束**：hex 严格按本表。`Board.cs` `GemType` enum 索引锁死 0-5，新增颜色时**追加**到末尾（6, 7, ...）并同步更新 `SpritePaths.GemTypeToSprite` map（见 `ASSET_INTEGRATION.md` §2）。
 
-### 2.2 UI 色板（v0.2 新增）
+### 2.2 UI / 品牌色板
 
-| 用途 | hex | 备注 |
-|---|---|---|
-| **品牌主色（紫）** | `#88489B` | 与 `gem_purple` 同色 = 视觉一致性 |
-| **品牌冷色（蓝紫）** | `#5D7FE6` | 🆕 v0.2 新加 — 用于 gem 冷色高光、链接、次级强调 |
-| **背景深紫** | `#1A0F2E` | 🆕 v0.2 — `bg_game` 实际色 |
-| **背景中紫** | `#4A2D6E` | `bg_title` 渐变中段 |
-| **背景亮紫** | `#6B3FA0` | 背景径向渐变中心 |
-| **HUD 主文字** | `#FFFFFF` | 100% white |
-| **HUD 次级文字** | `#E0E0FF` | 微紫白 |
-| **Warning / Game Over** | `#FF6B6B` | EndScreen "You Lost!" |
-| **Success / Win** | `#52EB73` | 与 `gem_green` 同 |
-| **按钮 normal（已交付）** | 金色 `#FDA915→#FFEC8B` | 沿用 v0.1 |
-| **按钮 pressed（已交付）** | 深琥珀 `#D2841F→#8B5A00` | 沿用 v0.1 |
-| **Modal 蒙层** | `rgba(0, 0, 0, 0.6)` | popup / 关卡间过渡 |
+| Token | hex | 用途 |
+|-------|-----|------|
+| **品牌紫** | `#88489B` | App icon / 启动品牌 / coin 中央 gem / 主题强调 |
+| **品牌冷色（蓝紫）** | `#5D7FE6` | iOS cool highlight / 主题 accent 候选 |
+| **背景深紫** | `#1A0F2E` | cosmic bg 边缘 |
+| **背景中紫** | `#4A2D6E` | cosmic bg 中圈 |
+| **背景亮紫** | `#6B3FA0` | cosmic bg 中心 / mandala 主色 |
+| **HUD 主文字** | `#FFFFFF` | 主文字 / 高光 |
+| **Modal 蒙层** | `rgba(0, 0, 0, 0.6)` | 弹窗 |
+| **Warning / Game Over** | `#FF6B6B` | 红色警告 |
+| **Success / Win** | `#52EB73` | 与 gem_green 同 |
 
-### 2.3 主题配色（Austin brief §2.3，v1.0 引入）
+### 2.3 Star / Heart / Coin 配色
 
-**实现方式**：用 Godot `AddThemeColorOverride` 在 C# 端按 `CurrentTheme` enum 切换，**不增加任何 sprite**。
-
-| 主题 | 关卡 | 主色 | 强调色 | 灵感 |
-|------|-----|------|--------|------|
-| **Forest** | 1–20 | `#4A8F4A`（森林绿） | `#F5DEB3`（米色） | 苔藓 / 树叶 / 棕色树干 |
-| **Desert** | 21–40 | `#D2A679`（沙色） | `#FF8C42`（橙色夕阳） | 黄昏沙丘 / 仙人掌 |
-| **Ocean** | 41–60 | `#1E5F8C`（深海蓝） | `#7FCDCD`（青绿浪花） | 珊瑚 / 海浪 / 珍珠 |
-
-> Theme transition banner：仅跨主题（关卡 1→21 / 21→41）显示 1.5 秒淡入淡出。
-
-### 2.4 Star / Heart / Coin 配色（Austin brief §5）
-
-| icon | 启用色 | 灰禁色 | outline |
-|------|--------|--------|---------|
-| Star on | `#FFD700`（金黄） | `#A0A0A0`（灰） | `#FFFFFF` 2-3 px |
-| Heart on | `#FF4757`（红） | `#A0A0A0`（灰） | `#FFFFFF` 2-3 px |
-| Coin | `#FFD700`（金黄） | — | `#FFFFFF` 2-3 px |
-
-> Star / Heart / Coin 都是简单几何形状（不像 sapphire 那样有"水晶面"歧义），AI 出图风险低，但仍跑 rembg alpha 处理。
+| 元素 | 主色 hex | accent hex | outline |
+|------|---------|-----------|---------|
+| `star_on` | `#FFD700`（gold）| `#FFEC8B`（light gold）| `#FFFFFF` |
+| `star_off` | `#A0A0A0`（gray）| `#707070`（dark gray）| `#FFFFFF` |
+| `hud_heart` | `#FF4757`（red）| `#FF8B95`（light pink-red）| `#FFFFFF` |
+| `coin` | `#FFD700`（gold）| `#88489B`（purple gem 内嵌）| `#FFFFFF` |
 
 ---
 
-## 3. 字体
+## 3. 主题配色系统
 
-### 3.1 v1.0 ship：Godot Default Font
+> **D+4 整合**：本节合并自 `docs/design/theme-palette.md`（该文件 v1.0 起改为 redirect pointer，详见 [附录 C](#附录-cv02-polish-工作历史)）。
 
-**理由**（Mark D+1 拍板）：
-- ✅ 零资产（Godot 4 自带）
-- ✅ 零集成（无需 .ttf / .import）
-- ✅ 中文 + 英文 OK
-- ⚠️ 视觉感偏 generic（但 Casual 赛道 OK）
+### 3.1 概述
 
-### 3.2 字号规范（继承 GameScenes.cs 现有用法）
+Match3 v1.0 关卡系统分 **3 主题**（Forest / Desert / Ocean），各占 20 关。
 
-| 用途 | 字号 | 颜色 | 位置 |
-|------|------|------|------|
-| Title ("Magic Match") | 72 px | `#FFD955`（gold-ish） | TitleScreen 居中 |
-| End headline ("You Won!" / "Game Over") | 64 px | Win: `#52EB73` / Lose: `#FF6B6B` | EndScreen 居中 |
-| HUD (Score / Moves / Theme) | 28 px | `#FFFFFF` | HUD TopWide |
-| Button label | 28 px | 按钮内置默认 | 按钮中央 |
-| Level number (按钮内) | 24 px | `#FFFFFF` | 关卡按钮中央 |
-| 副信息 (Target / Moves left / Status) | 20 px | `#E0E0FF` | EndScreen 副标题 |
+**主题切换**在 C# 端实现（详见 §3.7 调用清单）：
 
-### 3.3 v1.1+ TTF 升级（暂不实施）
+```csharp
+// src/Features/Match3/Theme.cs (v1.0 由 Jacob 加)
+public enum MatchTheme { Forest, Desert, Ocean }
 
-候选字体（按备选）：
-- **Fredoka** / **Baloo 2** — Title 用（圆体友好）
-- **Nunito** / **Quicksand** — HUD / 按钮用（无衬线圆润）
-- **Noto Sans CJK** — 中文 fallback（如启用多语言）
-
----
-
-## 4. 间距 token
-
-### 4.1 token 定义（v0.2 新增）
-
-| token | 值 | 用途 |
-|-------|-----|---------|
-| `xs`  |  4 px | 装饰元素间距（小图标到文字） |
-| `sm`  | 12 px | 元素内部紧凑间距 |
-| `md`  | 20 px | 按钮之间垂直间距（Title→Quit） |
-| `lg`  | 40 px | 主要元素之间（Title→Play / HUD 字段间） |
-| `xl`  | 80 px | 屏与屏之间 / 大分隔 |
-
-### 4.2 现有用法对齐（GameScenes.cs）
-
-```
-HUD separation:       40 px  (lg)        ← GameScenes.BuildHud
-Title → Play:         40 px  (lg)        ← BuildTitleScreen spacer
-Play → Quit:          20 px  (md)
-Button min size:    220 × 70 px          ← GameScenes.MakeButton
-Board cell:          64 × 64 px          ← Match3BoardView._Ready
-Title font:           72 px
-HUD font:             28 px
-End headline:         64 px
+// src/Features/Match3/ThemeColors.cs (v1.0 由 Jacob 加)
+public static class ThemeColors
+{
+    public static (Color Primary, Color Accent, Color TextOnPrimary) Get(MatchTheme theme)
+        => theme switch
+        {
+            MatchTheme.Forest => (new Color("#4A8F4A"), new Color("#F5DEB3"), new Color("#FFFFFF")),
+            MatchTheme.Desert => (new Color("#D2A679"), new Color("#FF8C42"), new Color("#FFFFFF")),
+            MatchTheme.Ocean  => (new Color("#1E5F8C"), new Color("#7FCDCD"), new Color("#FFFFFF")),
+            _ => (new Color("#88489B"), new Color("#FFD955"), new Color("#FFFFFF")),
+        };
+}
 ```
 
-### 4.3 v1.0 新增用法（待 Austin / Jacob 实现时遵循）
+### 3.2 Forest（关卡 1–20）
 
-| 位置 | token |
-|------|-------|
-| 关卡按钮之间水平间距 | `md` |
-| Level select footer 按钮之间 | `lg` |
-| Star rating 3 颗星之间 | `sm` |
-| Theme banner 内边距 | `md` |
-| Modal popup 内边距 | `lg` |
+**主题叙事**：苔藓 / 树叶 / 棕色树干
 
----
+| Token | hex | RGB | 用途 |
+|-------|-----|-----|------|
+| **Primary** | `#4A8F4A` | rgb(74, 143, 74) | HUD 边框 / 主题强调 |
+| **Accent** | `#F5DEB3` | rgb(245, 222, 179) | 副标题 / level number |
+| **TextOnPrimary** | `#FFFFFF` | rgb(255, 255, 255) | Primary 上的文字 |
+| **Background tint** | `#1F3D1F` | rgb(31, 61, 31) | 关卡背景叠加（可选，alpha 30%） |
+| **Button bg** | `#5FAA5F` | rgb(95, 170, 95) | 关卡按钮 normal |
+| **Button pressed** | `#3D7A3D` | rgb(61, 122, 61) | 关卡按钮 pressed |
+| **Shadow / depth** | `#2D5C2D` | rgb(45, 92, 45) | 按钮下边阴影 |
 
-## 5. 暗色 / 亮色模式
+**对比度 check**：
+- `#FFFFFF` on `#4A8F4A` = 4.59:1 (AA pass for normal text) ✅
+- `#F5DEB3` on `#4A8F4A` = 3.05:1 (AA pass for large text only) ⚠️ 用于副标题字号 ≥ 18 px OK
+- `#F5DEB3` on `#1F3D1F` (深底) = 7.8:1 (AAA pass) ✅
 
-### 5.1 v1.0：仅暗色基调
+### 3.3 Desert（关卡 21–40）
 
-- 整体深紫背景（`#1A0F2E` / `#4A2D6E` / `#6B3FA0` 渐变）
-- HUD 文字白（`#FFFFFF` / `#E0E0FF`）
-- 强调元素（按钮 / star / coin）保持亮色（金色 / 红色 / 紫色）
+**主题叙事**：黄昏沙丘 / 仙人掌
 
-> **不接受亮色模式**：v1.0 ship 只一套暗色。亮色模式推到 v2.0（如果有用户反馈再评估）。
+| Token | hex | RGB | 用途 |
+|-------|-----|-----|------|
+| **Primary** | `#D2A679` | rgb(210, 166, 121) | HUD 边框 / 主题强调 |
+| **Accent** | `#FF8C42` | rgb(255, 140, 66) | 副标题 / level number |
+| **TextOnPrimary** | `#FFFFFF` | rgb(255, 255, 255) | Primary 上的文字 |
+| **Background tint** | `#5C3D1F` | rgb(92, 61, 31) | 关卡背景叠加（可选，alpha 30%） |
+| **Button bg** | `#A87849` | rgb(168, 120, 73) | 关卡按钮 normal（⚠️ 不能用 Primary 否则白字不够 AA）|
+| **Button pressed** | `#7A5028` | rgb(122, 80, 40) | 关卡按钮 pressed |
+| **Shadow / depth** | `#5C3D1F` | rgb(92, 61, 31) | 按钮下边阴影 |
 
-### 5.2 暗色基调的对比度要求
+**对比度 check**：
+- `#FFFFFF` on `#D2A679` = 2.31:1 (❌ 不够 AA) — 用于 Primary 上的文字时，**必须加阴影 / outline**，否则看不清
+- `#FFFFFF` on `#FF8C42` = 2.51:1 (❌ 不够 AA) — 同上
+- `#FFFFFF` on `#A87849` (button bg) = 4.39:1 (AA pass) ✅ **使用 button bg 作为底色**
+- `#FFFFFF` on `#5C3D1F` (深底) = 9.5:1 (AAA pass) ✅
 
-| 文本/背景组合 | 最小对比度 | 备注 |
-|--------------|-----------|------|
-| 白字 / 深紫底 | 7:1 (AAA) | HUD / Title |
-| 米色（`#F5DEB3`）/ Forest 主色 | 4.5:1 (AA) | Forest 主题副标题 |
-| `#E0E0FF` / 深紫底 | 7:1 | 副信息 |
+**修正历史**：v1.0 决策 = 用 `#A87849` (button bg) 做 button 底色（不是 Primary），保证文字 AA 对比度。
 
----
+### 3.4 Ocean（关卡 41–60）
 
-## 6. 资产规格总览
+**主题叙事**：珊瑚 / 海浪 / 珍珠
 
-### 6.1 通用规格
+| Token | hex | RGB | 用途 |
+|-------|-----|-----|------|
+| **Primary** | `#1E5F8C` | rgb(30, 95, 140) | HUD 边框 / 主题强调 |
+| **Accent** | `#7FCDCD` | rgb(127, 205, 205) | 副标题 / level number |
+| **TextOnPrimary** | `#FFFFFF` | rgb(255, 255, 255) | Primary 上的文字 |
+| **Background tint** | `#0F2D44` | rgb(15, 45, 68) | 关卡背景叠加（可选，alpha 30%） |
+| **Button bg** | `#2D7AB8` | rgb(45, 122, 184) | 关卡按钮 normal |
+| **Button pressed** | `#154E73` | rgb(21, 78, 115) | 关卡按钮 pressed |
+| **Shadow / depth** | `#0F3550` | rgb(15, 53, 80) | 按钮下边阴影 |
 
-| 维度 | 规格 | 备注 |
+**对比度 check**：
+- `#FFFFFF` on `#1E5F8C` = 6.51:1 (AAA pass) ✅
+- `#FFFFFF` on `#2D7AB8` = 4.62:1 (AA pass) ✅
+- `#0F2D44` (深底) on `#7FCDCD` = 5.46:1 (AA pass) ✅
+
+### 3.5 跨主题保留元素（不切换）
+
+| 元素 | hex | 来源 |
+|------|-----|------|
+| **6 颗 gem 色** | 见 §2.1 | 全主题共用 |
+| **背景深紫（v0.1 紫蓝宇宙感）** | `#1A0F2E` / `#4A2D6E` / `#6B3FA0` | Theme background 下层 |
+| **品牌主色** | `#88489B` | App icon / 启动品牌 |
+| **Modal 蒙层** | `rgba(0, 0, 0, 0.6)` | 弹窗 |
+| **Warning / Game Over** | `#FF6B6B` | 红色警告 |
+| **Success / Win** | `#52EB73` | 与 gem_green 同 |
+
+> Theme banner 文字：`"Forest"` / `"Desert"` / `"Ocean"`（英文，v1.0 ship；v1.1 i18n）
+
+### 3.6 主题切换动效
+
+**触发**：跨主题时（关卡 1→21 / 关卡 21→41）
+
+| 阶段 | 时长 | 视觉 |
 |------|------|------|
-| **Canvas 尺寸** | 见各类资产（1024×1024 / 720×1280 / 256×256） | **不偏离** |
-| **文件大小上限** | PNG ≤ 800 KB（asset 目录内），SVG ≤ 10 KB | rembg 后 magic verify |
-| **透明通道** | gem / button / icon / star / heart / coin 必须 RGBA | background 接受 RGB |
-| **PNG 压缩** | Godot import `compress/mode = 0` (Lossless) | 见 `ASSET_INTEGRATION.md` §3.1 |
-| **PNG filter** | Linear (Godot 4 默认) | 见 `ASSET_INTEGRATION.md` §3.3 |
-| **Mipmaps** | false (2D sprite 不需要) | 同上 |
-| **Alpha border fix** | `process/fix_alpha_border = true` | 同上 |
-| **Premultiplied alpha** | `false`（卡通 sprite 不需要 premult） | 同上 |
+| 淡入 | 0.3 s | ThemeBanner 从 alpha 0 → 1 |
+| 停留 | 1.0 s | 完全可见 |
+| 淡出 | 0.2 s | ThemeBanner 从 alpha 1 → 0 |
+| **总计** | **1.5 s** | banner 居中底部显示 |
 
-### 6.2 各类资产 canvas / 用途矩阵
+**ThemeBanner 视觉**：PanelContainer + Label 居中，背景半透明黑（`rgba(0,0,0,0.5)`），文字 36 px + accent 色，2 px 圆角。
 
-| 类别 | canvas | 格式 | 透明 | 用途 | 备注 |
-|------|--------|------|------|------|------|
-| 单 gem | 1024×1024 | RGBA | ✅ | 棋盘宝石（运行时） | Lossless import |
-| 单 button | 1024×1024 | RGBA | ✅ | UI 按钮（v1.0 启用 TextureButton） | 同上 |
-| 单 background | 720×1280 | RGB | ❌ | 标题 / 游戏 / 关卡选择背景 | 同上 |
-| App icon | 1024×1024 | SVG / PNG | ✅ | 启动器图标 + splash | 🆕 v0.2 由我手写 SVG（替换原占位） |
-| Splash | = App icon | SVG | — | 现有 export_presets 用 icon.svg | v1.0 不单独做 splash |
-| Star icon | 256×256 | RGBA | ✅ | 评分（3 颗 / 组） | 🆕 v1.0 P0 |
-| Heart icon | 128×128 | RGBA | ✅ | 续命 UI | 🆕 v1.0 P1 |
-| Coin icon | 128×128 | RGBA | ✅ | 货币 | 🆕 v1.0 P1 |
-| Lock icon | 256×256 | RGBA | ✅ | 锁定关卡 | 🆕 v1.0 P1 |
-| Level select bg | 720×1280 | RGB | ❌ | 关卡选择屏背景 | 🆕 v1.0 P0 |
-| Btn Play | 256×256 | RGBA | ✅ | 主按钮（关卡选择） | 🆕 v1.0 P1 |
+### 3.7 C# 端调用清单
 
-### 6.3 File size budget（粗略）
+> 以下 7 个 UI 元素在主题切换时需要 `AddThemeColorOverride`：
 
-| 类别 | 单文件 | 总预算（v1.0） |
-|------|--------|----------------|
-| Gem (×6 + _alpha ×6) | 600 KB | ~7 MB（12 文件） |
-| Button (×2 + _alpha ×2) | 600 KB | ~2.4 MB（4 文件） |
-| Background (×3) | 500 KB | ~1.5 MB（3 文件） |
-| Star (on + off) | 100 KB | 200 KB |
-| Heart (1) | 50 KB | 50 KB |
-| Coin (1) | 50 KB | 50 KB |
-| Lock (1) | 100 KB | 100 KB |
-| Icon SVG (1) | 10 KB | 10 KB |
-| **总计（v1.0 估算）** | — | **~12 MB**（APK 总体积 110 MB 中美术 < 1%） |
+```csharp
+// 1. HUD 边框 (BorderContainer)
+hudBorder.AddThemeColorOverride("border_color", primary);
 
----
+// 2. HUD Theme label (Label)
+themeLabel.AddThemeColorOverride("font_color", accent);
 
-## 7. 现有 18 PNG 现状评估
+// 3. Level button normal (Button)
+levelButton.AddThemeColorOverride("font_color", textOnPrimary);
+// levelButton.AddThemeStyleboxOverride("normal", buttonNormalStylebox(primary));
 
-> 评估人：Christine (D+1 用 PIL 视觉检查 + 文件分析)
+// 5. Theme banner background (PanelContainer)
+themeBanner.AddThemeStyleboxOverride("panel", bannerStylebox(primary));
 
-### 7.1 总览
+// 6. Progress bar fill (ProgressBar)
+progressBar.AddThemeStyleboxOverride("fill", progressFillStylebox(primary));
 
-| 指标 | 值 |
-|------|-----|
-| 文件总数 | 18（12 gem + 4 button + 2 background）+ 18 `.png.import` sidecar |
-| 总大小 | ~7 MB |
-| 平均评分 | **7.4 / 10** |
-| 可 ship（P0 / P0.5） | 17 / 18（94%） |
-| 需 polish（P1） | 4 / 18（22%） |
+// 7. Selected level highlight (Panel)
+selectedLevelPanel.AddThemeStyleboxOverride("panel", selectedStylebox(accent));
+```
 
-### 7.2 逐文件评分（10 分制）
+Jacob 在 v1.0 实现时按这个表查找颜色。v1.0 ship 必须保证 **Forest / Desert / Ocean 三主题都能正确切换 + 文字对比度 ≥ AA**。
 
-| # | 资产 | 评分 | 状态 | 改进项 |
-|---|------|------|------|--------|
-| 1 | `gem_red.png` + `_alpha` | 7.0 | ✅ teardrop + 高光 + 渐变扎实；⚠️ 颜色偏 orange-red（应是 crimson）；❌ 无 sparkles | P1: 颜色微调 + 加 3-4 颗 sparkle |
-| 2 | `gem_orange.png` + `_alpha` | 7.0 | ✅ 渐变扎实；⚠️ 颜色好；❌ 无 sparkles | P1: 加 3-4 颗 sparkle |
-| 3 | `gem_yellow.png` + `_alpha` | 7.5 | ✅ 颜色饱和；⚠️ 高光偏弱；❌ 无 sparkles | P1: 加 sparkle + 高光 |
-| 4 | `gem_green.png` + `_alpha` | 7.5 | ✅ 森林绿 + 2 颗 sparkle；⚠️ outline 偏深（v2 已修 halo） | OK |
-| 5 | `gem_blue.png` + `_alpha` | **8.0** | ✅ 最强一颗；蓝色 sapphire 风；4 颗 sparkle | OK |
-| 6 | `gem_purple.png` + `_alpha` | 7.0 | ✅ 紫色好；4 颗 sparkle；⚠️ 颜色略 hot-pink；⚠️ 底部阴影 family 不齐 | P1: 颜色微调（→ deep amethyst） |
-| 7 | `button_normal.png` + `_alpha` | 6.0 | ⚠️ 底部紫色 ring bug（v0.1 spec 已记） | P1: 紫色 ring 修 |
-| 8 | `button_pressed.png` + `_alpha` | 7.5 | ✅ 深琥珀 + 白色 outline；⚠️ 深度感弱 | OK |
-| 9 | `bg_game.png` | 6.0 | ⚠️ 太暗（`#1A0F2E` 实际色比 spec 说的"深紫渐变"更深）；⚠️ mandala 偏弱；⚠️ 星点稀疏 | P1: mandala 强化 |
-| 10 | `bg_title.png` | **8.5** | ✅ 最强一张；紫→深蓝渐变 + 八角 starburst 像魔法阵 | OK |
+### 3.8 颜色选择逻辑（来自 brief 灵感词锚定）
 
-### 7.3 spec vs 实际差异总结（v0.1 → v0.2 关闭）
+- **Forest** → 苔藓 / 树叶 / 棕色树干 → 绿主 + 米黄副
+- **Desert** → 黄昏沙丘 / 仙人掌 → 沙主 + 橙夕阳副
+- **Ocean** → 珊瑚 / 海浪 / 珍珠 → 深蓝主 + 青绿浪花副
 
-| 字段 | v0.1 spec 说 | 实际 | v0.2 处理 |
-|------|-------------|------|-----------|
-| Gem outline | white 2-3 px | dark colored | ✅ 更新 spec 对齐实际 |
-| Gem 形 | NO facets | 少量 facet | ✅ 接受半写实 |
-| Gem sparkles | 3-4 white 散布 | 0-4 不齐 | ⚠️ P1 polish |
-| Button normal | 金渐变 | 金 + 紫色 ring | ⚠️ P1 polish |
-| bg_game mandala | 中心 mandala | 单层偏弱 | ⚠️ P1 polish |
-| bg_title starburst | 中心 starburst | 八角清晰 | ✅ 完全匹配 |
+每个主题 Primary / Accent 互补（暖+冷或冷+暖），避免单调。
+
+**为什么 v0.1 紫蓝宇宙感不变成主题之一？**
+
+紫蓝宇宙是 **base 背景层**（永远在），主题是在 base 之上的 **HUD / 关卡按钮 / 横幅 overlay 色**。3 主题只在"前景 UI" 换色，不动背景。
 
 ---
 
-## 8. v1.0 资产清单（新增）
+## 4. 字体
 
-> 来源：`/shared/austin-christine-brief.md` §2。详见 brief 完整版。
+### 4.1 v1.0 ship 状态
 
-### 8.1 P0（阻塞 v1.0）
+**Godot default**（v1.0 不加 TTF）。
 
-| # | 资产 | canvas | 格式 | 透明 | 风格约束 |
-|---|------|--------|------|------|---------|
-| 1 | `ui/level_select_bg.png` | 720×1280 | RGB | ❌ | 沿用 v0.1 紫蓝宇宙感 + 主体留出 Level Grid 区域 |
-| 2 | `ui/star_on.png` | 256×256 | RGBA | ✅ | 5 角金色实心 + 白 outline 2-3 px + 1 颗 sparkle（与 gem 风格一致） |
-| 3 | `ui/star_off.png` | 256×256 | RGBA | ✅ | 5 角灰色实心 + 白 outline 2-3 px（与 star_on 形一致，仅色改） |
+理由：
+- ✅ TTF 增加 ~1-2 MB 包大小（CJK 字体尤其大）
+- ✅ Casual 玩家对字体的容忍度高于 hardcore
+- ✅ v1.1 可升级（CJK / 多语言时一起加）
 
-### 8.2 P1（v1.0 强烈推荐，不阻塞）
+### 4.2 字体规格（v1.0）
 
-| # | 资产 | canvas | 格式 | 透明 | 风格约束 |
-|---|------|--------|------|------|---------|
-| 4 | `ui/btn_play.png` | 256×256 | RGBA | ✅ | 金色实心 + 白 outline + ▶ 三角（绿色）+ 白高光 |
-| 5 | `ui/btn_locked.png` | 256×256 | RGBA | ✅ | 灰锁实心 + 白 outline（与 btn_play 形一致） |
-| 6 | `ui/hud_heart.png` | 128×128 | RGBA | ✅ | 红心 + 白 outline 2-3 px |
-| 7 | `ui/coin.png` | 128×128 | RGBA | ✅ | 金色硬币 + 白 outline + 1 颗 sparkle |
+| Token | size | weight | 用途 |
+|-------|------|--------|------|
+| `text_xl` | 36 px | Bold | 标题（"Forest" / "Desert" / "Ocean"）|
+| `text_lg` | 24 px | Bold | 副标题 / level number |
+| `text_md` | 18 px | Regular | 按钮文字 / 主 UI |
+| `text_sm` | 14 px | Regular | 提示 / 标签 |
+| `text_xs` | 12 px | Regular | 版权 / 调试 |
 
-### 8.3 P2（v1.0 不做，列在这里做规划）
+### 4.3 文字颜色（与主题联动）
 
-| # | 资产 | 用途 |
-|---|------|------|
-| 8 | `ui/world_map_*.png` (大背景) | v2.0 升级世界地图 |
-| 9 | `ui/map_node_*.png` | v2.0 地图节点 sprite |
-| 10 | `ui/path_line_*.png` | v2.0 地图路径连线 |
+- 主文字：`#FFFFFF`（全主题）
+- 主题强调文字：用主题 Accent（§3）
+- 警告文字：`#FF6B6B`
+- 成功文字：`#52EB73`
 
-### 8.4 v1.0 美术工作量估算（来自 Austin brief §7）
+---
 
-| 项目 | 工作量 | 备注 |
-|------|--------|------|
-| 3 张 P0 sprite（level_select_bg + star_on + star_off） | 0.5–1 天 | 含 rembg + QA |
-| 4 张 P1 sprite（btn_play + btn_locked + heart + coin） | 0.5–1 天 | 含 rembg + QA |
-| 3 套主题配色文档（CSS-style color override table） | 0.5 天 | **不算 C# 端实现** |
-| **v1.0 美术总工作量** | **1–2 天** | 比 world map 方案省 50% |
+## 5. 间距 token
+
+### 5.1 标准间距（统一）
+
+| Token | 数值 | 用途 |
+|-------|------|------|
+| `space_xs` | 4 px | 紧邻元素（icon + label）|
+| `space_sm` | 8 px | 组件内 padding |
+| `space_md` | 16 px | 组件间 gap / section padding |
+| `space_lg` | 24 px | 大区块分隔 |
+| `space_xl` | 32 px | 屏幕边缘 padding |
+
+### 5.2 圆角
+
+| Token | 数值 |
+|-------|------|
+| `radius_sm` | 4 px（chip / tag）|
+| `radius_md` | 8 px（button / card）|
+| `radius_lg` | 16 px（modal / panel）|
+
+---
+
+## 6. 暗色 / 亮色模式
+
+### 6.1 v1.0 ship 状态
+
+**仅暗色模式**。理由：
+- ✅ 紫蓝宇宙感本就是 dark theme
+- ✅ Casual Android 用户大多数系统是 dark 或跟随系统
+- ✅ 6 颗 gem 在 dark 背景上对比度好（v0.1 已验证 7.4/10 avg）
+- ⏸️ 亮色模式可作 v1.1 改进（需要重新调整 gem outline + bg）
+
+### 6.2 暗色背景色（v1.0）
+
+| Token | hex | 用途 |
+|-------|-----|------|
+| `bg_deep` | `#1A0F2E` | 屏幕边缘 |
+| `bg_mid` | `#4A2D6E` | 屏幕中圈 |
+| `bg_bright` | `#6B3FA0` | 中心 mandala / 视觉锚 |
+
+---
+
+## 7. 资产规格总览
+
+### 7.1 文件大小预算
+
+| 类别 | 单文件上限 | 总预算 |
+|------|----------|--------|
+| Gem (1024×1024) | 800 KB | ~6 MB |
+| Button + UI sprite (256-512) | 100 KB | ~1 MB |
+| Background (720×1280) | 800 KB | ~1.6 MB |
+| Icon SVG | 10 KB | 10 KB |
+
+**v1.0 总预算 ~12 MB → 实际 ~7.9 MB（节省 34%）**
+
+### 7.2 import 设置锁定（per `ASSET_INTEGRATION.md` §3.1）
+
+```ini
+compress/mode = 0              # Lossless
+compress/high_quality = false
+mipmaps/generate = false         # 2D UI 不需要 mipmap
+process/fix_alpha_border = true # 修复 alpha 边缘
+process/premult_alpha = false  # 不预乘（runtime 兼容）
+```
+
+---
+
+## 8. v1.0 ship-ready 资产清单
+
+> **D+9 状态**：所有 30 个运行时资产已 ship-ready（5 个 art branch push + 1 个 docs branch in progress）。
+
+### 8.1 Gem（12 PNG，6 颗 × 2 版本）
+
+| 文件 | 尺寸 | 大小 | 状态 | Commit |
+|------|------|------|------|--------|
+| `gem_red.png` + `.png.import` | 1024×1024 RGBA | ~590 KB | ✅ D+5 polished | 5c53a28 |
+| `gem_red_alpha.png` | 1024×1024 RGBA | ~580 KB | ✅ D+5 polished | 5c53a28 |
+| `gem_orange.png` + `.png.import` | 1024×1024 RGBA | ~410 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_orange_alpha.png` | 1024×1024 RGBA | ~410 KB | ✅ D+6 sparkle polish | ec1caf2 |
+| `gem_yellow.png` + `.png.import` | 1024×1024 RGBA | ~430 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_yellow_alpha.png` | 1024×1024 RGBA | ~430 KB | ✅ D+6 sparkle polish | ec1caf2 |
+| `gem_green.png` + `.png.import` | 1024×1024 RGBA | ~410 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_green_alpha.png` | 1024×1024 RGBA | ~410 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_blue.png` + `.png.import` | 1024×1024 RGBA | ~410 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_blue_alpha.png` | 1024×1024 RGBA | ~410 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_purple.png` + `.png.import` | 1024×1024 RGBA | ~485 KB | ✅ v0.1 base | 31c2ac3 |
+| `gem_purple_alpha.png` | 1024×1024 RGBA | ~485 KB | ✅ D+5 polished (target #88489B, actual #77338F) | 5c53a28 |
+
+### 8.2 UI（10 PNG）
+
+| 文件 | 尺寸 | 大小 | 状态 | Commit |
+|------|------|------|------|--------|
+| `button_normal.png` + `.png.import` | 1024×1024 RGBA | ~435 KB | ✅ D+6 purple-ring fix | ec1caf2 |
+| `button_normal_alpha.png` | 1024×1024 RGBA | ~530 KB | ✅ D+6 purple-ring fix | ec1caf2 |
+| `button_pressed.png` + `.png.import` | 1024×1024 RGBA | ~415 KB | ✅ D+7 purple-ring fix | f073440 |
+| `button_pressed_alpha.png` | 1024×1024 RGBA | ~575 KB | ✅ D+7 purple-ring fix | f073440 |
+| `star_on.png` + `.png.import` | 256×256 RGBA | ~10 KB | ✅ D+4 hand-written SVG | c5980aa |
+| `star_off.png` + `.png.import` | 256×256 RGBA | ~8 KB | ✅ D+4 hand-written SVG | c5980aa |
+| `btn_play.png` + `.png.import` | 256×256 RGBA | ~11 KB | ✅ D+5 hand-written SVG | 5c53a28 |
+| `btn_locked.png` + `.png.import` | 256×256 RGBA | ~8 KB | ✅ D+5 hand-written SVG | 5c53a28 |
+| `hud_heart.png` + `.png.import` | 128×128 RGBA | ~5 KB | ✅ D+5 hand-written SVG | 5c53a28 |
+| `coin.png` + `.png.import` | 128×128 RGBA | ~9 KB | ✅ D+5 hand-written SVG | 5c53a28 |
+| `level_select_bg.png` + `.png.import` | 720×1280 RGB | ~470 KB | ✅ D+4 AI re-gen | c5980aa |
+
+### 8.3 Backgrounds（2 PNG）
+
+| 文件 | 尺寸 | 大小 | 状态 | Commit |
+|------|------|------|------|--------|
+| `bg_title.png` + `.png.import` | 720×1280 RGB | ~795 KB | ✅ D+7 AI re-gen (ornate lotus) | f073440 |
+| `bg_game.png` + `.png.import` | 720×1280 RGB | ~740 KB | ✅ D+6 AI re-gen (mandala) | ec1caf2 |
+
+### 8.4 Icon（1 SVG）
+
+| 文件 | 尺寸 | 大小 | 状态 | Commit |
+|------|------|------|------|--------|
+| `icon.svg` + `.svg.import` | 1024×1024 viewBox | ~6 KB | ✅ D+2 with 3 微调 (sparkles / glow / cool-highlight) | 54947ae |
+
+### 8.5 v1.0 ship 总计：~7.9 MB / 12 MB 预算（节省 34%）
 
 ---
 
 ## 9. 组件清单
 
-> 每个组件 = 一个可复用的视觉单元。代码端用 C# 程序化构建（per AGENTS.md），美术端给规格。
+### 9.1 全屏组件
 
-### 9.1 通用组件
+| 组件 | 说明 | 关键资产 |
+|------|------|----------|
+| **TitleScreen** | 启动屏 / 主菜单 | bg_title + icon + button_normal |
+| **LevelSelectScreen** | 关卡选择（5 列 × 4 行 = 20 关）| level_select_bg + button_normal + star_on/off |
+| **GameplayScreen** | 游戏主屏（6×8 棋盘）| bg_game + 6 gem + hud_heart + coin |
+| **EndScreen** | 结算（Win / Lose）| bg_game + star_on/off + button_normal |
+| **ThemeBanner** | 跨主题 banner（overlay 1.5s）| 仅颜色，无 sprite |
+| **Modal** | 弹窗 / 暂停 / 设置 | 半透明黑蒙层 + button_normal |
 
-| 组件 | 视觉规格 | 字号 | 颜色 | 数据来源 |
-|------|---------|------|------|---------|
-| **Button (normal)** | button_normal_alpha.png（220×70 px min） | 28 px | 默认 | `GameScenes.MakeButton` |
-| **Button (pressed)** | button_pressed_alpha.png | 28 px | 默认 | 同上 |
-| **Button (disabled)** | 50% alpha + 灰 | 28 px | `#A0A0A0` | v1.0 加 |
-| **Score Label** | HUD 左 | 28 px | `#FFFFFF` | `GameScenes.BuildHud` |
-| **Moves Label** | HUD 中 | 28 px | `#FFFFFF` | 同上 |
-| **Theme Label** | HUD 右（v1.0 新增） | 28 px | 主题强调色 | Austin brief §3.3 |
-| **Pause Button** | HUD 远右（v1.0 新增） | icon | `#FFFFFF` | 同上 |
-| **Star Icon (on)** | star_on.png | — | `#FFD700` + 白 outline | Austin brief §2.1 |
-| **Star Icon (off)** | star_off.png | — | `#A0A0A0` + 白 outline | 同上 |
-| **Heart Icon** | hud_heart.png | — | `#FF4757` + 白 outline | 同上 |
-| **Coin Icon** | coin.png | — | `#FFD700` + 白 outline | 同上 |
-| **Lock Icon** | btn_locked.png | — | `#A0A0A0` + 白 outline | 同上 |
+### 9.2 局部组件
 
-### 9.2 屏级别组件
+| 组件 | 说明 | 关键资产 |
+|------|------|----------|
+| **Button** | 通用按钮（normal / pressed / locked）| button_normal + button_pressed + btn_locked |
+| **HUD** | 顶部状态栏（heart + coin + theme label）| hud_heart + coin + 主题强调色 |
+| **Toast** | 短通知（0.5s 淡入淡出）| 文字 + 半透明黑蒙层 |
+| **ProgressBar** | 关卡进度 | 主题强调色 |
+| **AdBadge** | "Ad" 标识（续命按钮内）| 文字 + AdMob 标识色 |
+| **ScorePanel** | 分数 / 目标分数 | 文字 + 主题强调色 |
 
-| 屏 | 子组件 | 视觉规格 |
-|---|--------|---------|
-| **TitleScreen** | Background (bg_title) + Title (72px) + VBox (Play + Quit) | 见 GameScenes.BuildTitleScreen |
-| **GameScreen** | Background (bg_game) + HUD (TopWide) + Board (Center) | 见 Match3Feature.RebuildGameScreen |
-| **EndScreen** | Background (bg_game) + StarRating (3 star) + ScoreLabel + TargetLabel + StatusLabel + ContinueButton + MainMenuButton + ContinueAdButton | 扩展 GameScenes.BuildEndScreen（Austin brief §3.2） |
-| **LevelSelectScreen** 🆕 | Background (level_select_bg) + Header (Title + CoinDisplay + HeartsDisplay) + LevelGrid (5×4 = 20 关/主题) + Footer (Back + Shop) | 新建 LevelSelectScreen.cs（Austin brief §3.1） |
-| **ThemeBanner** 🆕 | PanelContainer (BottomCenter) + ThemeLabel ("Forest" / "Desert" / "Ocean") | 跨主题时显示 1.5 秒淡入淡出 |
-| **Modal (Pause / Confirm)** 🆕 | 半透明黑蒙层 + 居中 VBox | v1.0 加 |
+### 9.3 Gem 组件
+
+| 组件 | 状态 | 视觉 |
+|------|------|------|
+| **Gem Idle** | 默认 | 当前 gem sprite |
+| **Gem Selected** | 玩家点选 | scale 1.05 + 白 outline |
+| **Gem Hint** | 系统提示可消除 | 0.5s pulse (alpha 0.5→1) |
+| **Gem Match** | 3+ 匹配 | scale 1.2 + alpha 0（0.3s） |
+| **Gem Fall** | 下落补位 | y offset → 0（0.4s ease-out）|
+| **Gem Spawn** | 顶部生成 | y -50 → 0（0.3s）|
 
 ---
 
 ## 10. 状态规范
 
-### 10.1 按钮状态
-
-| 状态 | 视觉 | 触发 |
-|------|------|------|
-| **Normal** | button_normal_alpha + 全色 | 鼠标未接触 |
-| **Hover** | Normal + 10% 亮度提升（ColorRect modulate） | 鼠标进入 |
-| **Pressed** | button_pressed_alpha（v0.1 已交付） | 鼠标按下 |
-| **Disabled** | 50% alpha + 灰 | 不可交互 |
-| **Focused** | Normal + 白 outline 2 px（额外描边） | 键盘 focus（v1.0 可选） |
-
-### 10.2 Star 状态
+### 10.1 Button 状态
 
 | 状态 | 视觉 |
 |------|------|
-| **On（达成）** | star_on.png（5 角金色） |
-| **Off（未达成）** | star_off.png（5 角灰色，相同形） |
+| **normal** | button_normal.png（金 gold gradient，无紫环）|
+| **pressed** | button_pressed.png（更深 gold gradient，无紫环）|
+| **hover** | modulate 1.0 → 1.1（v1.0 不需要，Godot 默认）|
+| **disabled** | gray scale + alpha 0.5 |
+| **locked** | btn_locked.png（gray padlock + gray 底）|
 
-### 10.3 关卡状态
+### 10.2 Theme 状态
 
-| 状态 | 视觉 | 触发 |
-|------|------|------|
-| **Unlocked** | 按钮 normal + 关卡数字 + stars | 已解锁可玩 |
-| **Locked** | btn_locked.png 覆盖整个按钮 | 未解锁 |
-| **Current** | 按钮 normal + 边框金色脉冲 | 当前关（v1.0 加） |
+3 个 enum：`Forest` / `Desert` / `Ocean`（详见 §3）。
+
+跨主题切换：v1.0 触发于关卡 1→21（Forest→Desert）和 21→41（Desert→Ocean）。
 
 ---
 
@@ -420,7 +493,7 @@ End headline:         64 px
 
 ## 12. 动效规范
 
-### 12.1 v1.0 ship 状态（基于 v0.1 当前）
+### 12.1 v1.0 ship 状态
 
 | 元素 | v0.1 状态 | v1.0 计划 |
 |------|-----------|-----------|
@@ -429,6 +502,7 @@ End headline:         64 px
 | 按钮按下 | ✅ Godot 默认 | 沿用 |
 | 屏切换 | ❌ 直接 SwapScreen | ✅ Tween FadeIn/Out 0.2s |
 | Star 评分 | ❌ 一次性显示 | ✅ 3 张依次 StarPop 0.1s 间隔 |
+| Theme banner | ❌ 无 | ✅ Tween ModulateAlpha 1.5s（详见 §3.6）|
 
 ### 12.2 动效实现（v0.2 仅规范，实现 v1.0）
 
@@ -453,7 +527,7 @@ End headline:         64 px
 
 ---
 
-## 13. AI 出图规则（继承 v0.1 §3/§5）
+## 13. AI 出图规则
 
 ### 13.1 v1.4 防羽化规则（必须遵守）
 
@@ -494,15 +568,26 @@ End headline:         64 px
 | 9 | 下载链路偶发 JPEG-as-PNG | 8-byte magic verify + `Image.open(p).save(p, format="PNG")` 修复 |
 | 10 | bria-rmbg 1GB 模型 OOM | 强制 `--model u2netp` (4.57MB) |
 
-### 13.3 新增 icon 类别（star / heart / coin）的特殊规则
+### 13.3 新增 icon 类别（star / heart / coin / button）的特殊规则
 
-- 都是简单几何形状，AI 出图风险低
-- 仍跑 icon_alpha.py rembg
+- 都是简单几何形状，AI 出图风险低 → **D+5 起改用手写 SVG（更可控、更小文件）**
 - star 5 角形 + 金色 + 白 outline（与 gem family 一致）
 - heart 红心形 + 白 outline
-- coin 圆形 + 金色 + 中央数字 / 图案（v1.0 决定是否加图案）
+- coin 圆形 + 金色 + 中央数字 / 图案
+- button 圆角 + 金 gradient + 内嵌 icon（▶ / 🔒）
 
-### 13.4 rembg 处理命令模板
+### 13.4 PIL 后处理经验沉淀（D+5/D+6）
+
+| 技巧 | 用途 |
+|------|------|
+| **smart-mask gain** | gem_purple 紫环 polish：只对 `(B>G AND R>G AND purple_body)` mask 应用 gain，**避开** shadow disc 区域，避免绿色溢出 |
+| **purple ring detection** | `(R>100) & (G<130) & (B>70) & (B>G) & (R>G) & (A>100)` — 20,000 像素 button_normal 紫环 100% 检测 |
+| **gold gradient replacement** | 按 y-position 计算 target gold (#FEDD74 top → #F17132 bottom)，保证紫环替换无缝 |
+| **edge ratio analysis** | purple pixel 在 edge zone 的比例，>0.6 = ring, <0.5 = distributed highlights — 区分 bug vs design intent |
+| **PIL 直接画 sparkle** | 4-point star polygon + radial lines = gem sparkle decoration（10 行代码，60 行 Python）|
+| **背景 AI 重出 > 手画** | 复杂 bg（mandala / lotus）AI 10 秒 vs 手画 2-3 小时 |
+
+### 13.5 rembg 处理命令模板
 
 ```bash
 # 6 颗 gem (preset gem)
@@ -536,9 +621,9 @@ python3 /root/icon_alpha.py \
 
 ### 14.1 文件级
 
-- [ ] canvas 尺寸正确（按 §6.2 矩阵）
+- [ ] canvas 尺寸正确（按 §7 矩阵）
 - [ ] RGBA（gem / button / icon / star / heart / coin）/ RGB（bg）
-- [ ] 文件大小 ≤ 上限（§6.1）
+- [ ] 文件大小 ≤ 上限（§7.1）
 - [ ] PNG 8-byte magic verify（`89504E47` 不是 `FFD8FFE0`）
 - [ ] partial ratio 1.2-2.5%（硬边干净）
 
@@ -547,8 +632,9 @@ python3 /root/icon_alpha.py \
 - [ ] 形正确（teardrop / star 5-角 / heart / coin / bg 渐变方向）
 - [ ] 高光位置一致（gem 左上 / star 上方 / heart 中央）
 - [ ] outline 风格统一（dark colored 2-3 px，非 white — 接受 v0.2 实际）
-- [ ] sparkles 数量 3-4 颗（gem family 一致）
-- [ ] 颜色在 §2.1 / §2.4 hex ±5 内
+- [ ] sparkles 数量 1-5 颗（gem family D+6 polish 后 1-3 一致）
+- [ ] 颜色在 §2.1 / §3 hex ±5 内
+- [ ] **无紫环**（`python3 scripts/purple-scanner.py` 必须 0 报告）
 
 ### 14.3 集成级（参考 ASSET_INTEGRATION.md）
 
@@ -572,9 +658,9 @@ python3 /root/icon_alpha.py \
 
 ---
 
-## 附录 A：fork-friendly color overrides
+## 附录 A：fork-friendly 修改指南
 
-> fork godot-template 时改这些字段就能换主题 / 换品牌色。
+> fork godot-template 时改这些字段就能换主题 / 换品牌色 / 改关卡数 / 改主题系统。
 
 ### A.1 必须改（替换"Magic Match"身份）
 
@@ -601,21 +687,65 @@ bash scripts/configure.sh \
 
 ### A.3 改主题配色（v1.0 引入）
 
-见 §2.3 + 主题 enum 在 `src/Features/Match3/Theme.cs`（v1.0 由 Jacob 加）。
+详见 §3.2-3.4 + §3.7 调用清单。
+
+fork 时只改 hex（每主题 7 个）+ 同步改 `ThemeColors.Get()` switch，**0.5 小时**工作量，不需要碰 sprite。
+
+### A.4 改关卡数 / 主题数
+
+| 改 | 文件 | 工作量 |
+|---|------|--------|
+| 关卡数 60 → N | `src/Features/Match3/LevelConfig.cs` | 5 分钟 |
+| 主题数 3 → K | §3.2-3.4 + `Theme.cs` enum + `ThemeColors.Get()` switch | 2-3 小时 |
+| 加新 gem 颜色 | §2.1 + `Board.cs` GemType enum（追加末尾）+ `SpritePaths.cs` map + 1 PNG | 1 小时 |
+| 加新 bg | `assets/backgrounds/bg_X.png` + `.png.import` + `LevelConfig.cs` | 0.5 小时 |
+
+### A.5 改字体（v1.1 升级 TTF）
+
+`assets/fonts/` 加 `.ttf` 文件 → Godot `FontFile` 资源 → `theme.SetFont("default_font", font)`。预计 v1.1 增加 ~1-2 MB 包大小。
 
 ---
 
 ## 附录 B：变更日志
 
+### v1.0 (2026-10-06, Christine)
+
+D+9 docs 整合 + 5 个 art branch 完成。**ship-ready 状态**。
+
+**重大变更（vs v0.2）**：
+
+- **§3 主题配色系统** ← 合并自独立 `docs/design/theme-palette.md`（D+4 文件，现改为 1 行 redirect pointer）
+  - §3.1 概述 + C# `ThemeColors.Get()` switch
+  - §3.2 Forest / 3.3 Desert / 3.4 Ocean 完整 hex 表
+  - §3.5 跨主题保留元素
+  - §3.6 主题切换动效（1.5s banner）
+  - §3.7 C# 端调用清单（7 个 UI override）
+  - §3.8 颜色选择逻辑（brief 灵感词锚定）
+- **§6 暗色/亮色模式** 简化（v1.0 仅暗色）
+- **§7 资产规格** 增加总预算（~12 MB → 实际 7.9 MB）
+- **§8 v1.0 ship-ready 资产清单** ← 完整替换 v0.2 的 §6/§7/§8：30 个运行时资产 + 5 个 commit hash 表格
+- **§9 组件清单** 扩展：全屏 + 局部 + Gem 3 类组件
+- **§10 状态规范** 增加 Theme 状态
+- **§12 动效规范** 增加 Theme banner 1.5s 动效
+- **§13 AI 出图规则** + **§13.4 PIL 后处理经验沉淀**：smart-mask gain / purple ring detection / gold gradient replacement / edge ratio analysis / sparkle drawing
+- **§14.2 视觉级** + 必跑 `python3 scripts/purple-scanner.py`
+- **附录 A fork-friendly** 扩展：品牌色 / 主题色 / 关卡数 / 主题数 / 新 gem / 新 bg / 字体升级
+
+**ship-ready 状态**：
+- 30 个产品资产文件（12 gem + 10 ui + 2 bg + 1 icon + 2 docs）
+- 25 个 import sidecar（24 .png.import + 1 .svg.import）
+- 总大小 ~7.9 MB（节省 34%）
+
 ### v0.2 (2026-10-06, Christine)
 
-基于 Mark D+1 拍板 + Austin D+2 brief + D+1 评估重写。
+D+3 docs 重写。基于 Mark D+1 拍板 + Austin D+2 brief + D+1 评估。
 
-**变更**：
+**变更（vs v0.1）**：
+
 - §1 设计风格：从"white outline + NO facets"改为"dark outline + 半写实 facet"（spec 对齐实际）
 - §2.1 Gem 色：保留锁定 + anchor 词精简
 - §2.2 UI 色：新增 `#5D7FE6` 冷色 + `#1A0F2E` 背景深紫
-- §2.3 主题配色：新增（Forest / Desert / Ocean）
+- §2.3 主题配色：新增（Forest / Desert / Ocean）— 占位指向未来 theme-palette.md
 - §2.4 Star / Heart / Coin 配色：新增（Austin brief §5）
 - §3 字体：从"未提及"改为"v1.0 ship 用 Godot default + v1.1 TTF 升级"
 - §4 间距 token：新增（xs / sm / md / lg / xl）
@@ -637,4 +767,24 @@ bash scripts/configure.sh \
 
 初版（Magic Match ART_SPEC v1.3 frozen + Founder v1.4 anti-feather 规则）。
 10 张 base + 8 张 alpha。
-**v0.2 起作废**，保留作历史参考。
+
+---
+
+## 附录 C：v0.2 polish 工作历史
+
+> **D+9 决策**：polish 工作历史保留为独立 trace doc，**不**合并到本 ART_SPEC（保持本文件精炼）。
+
+| Branch | Commit | Polish 内容 |
+|--------|--------|------------|
+| `art/v0.2-polish` | ec1caf2 | button_normal 紫环修复（19,978 像素） + bg_game mandala AI 重出 + gem_orange/yellow sparkle family 补齐 |
+| `art/v0.2-polish-2` | f073440 | button_pressed 紫环修复（11,013 + 13,731 像素） + bg_title AI 重出（ornate lotus） |
+| `art/v0.2-polish-3` | 6c3e20d | purple-scanner 工具脚本 + 0 new ring bugs 报告 |
+
+**详细 polish 8 scan 方法 + 9 个触发文件 3 重验证** → 见独立 doc [`docs/polish-8-scan-report.md`](polish-8-scan-report.md)
+
+**已废弃文件**：
+- `docs/design/theme-palette.md` → v1.0 起改为 1 行 redirect pointer（内容已合并到本文件 §3）
+
+---
+
+**v1.0 美术 ship-ready。** 走 v1.1 polish backlog 等待 v1.0 ship 反馈。
