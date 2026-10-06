@@ -77,3 +77,45 @@ msgstr "Quit"
 #: src/Features/Splash/SplashScreen.tscn
 msgid "60 Levels · 3 Themes"
 msgstr "60 Levels · 3 Themes"
+
+# i18n key: settings.title
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:96
+msgid "settings.title"
+msgstr "Settings"
+
+# i18n key: settings.language
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:118
+msgid "settings.language"
+msgstr "Language"
+
+# i18n key: settings.apply
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:159
+msgid "Apply"
+msgstr "Apply"
+
+# i18n key: settings.cancel
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:171
+msgid "Cancel"
+msgstr "Cancel"
+
+# i18n key: settings.english
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:137
+msgid "English"
+msgstr "English"
+
+# i18n key: settings.spanish
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:138
+msgid "Español"
+msgstr "Español"
+
+# i18n key: settings.portuguese
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:139
+msgid "Português"
+msgstr "Português"

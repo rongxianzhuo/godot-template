@@ -65,7 +65,7 @@ public partial class LocaleManager : Node
     /// <summary>Currently active locale code (read-only public view).</summary>
     public string CurrentLocale => _currentLocale;
 
-    public override void _Ready()
+    public override async void _Ready()
     {
         Instance = this;
         GD.Print("[LocaleManager] _Ready — loading locale/*.po translations");
@@ -74,13 +74,60 @@ public partial class LocaleManager : Node
         LoadAndRegister(EsTranslationPath);
         LoadAndRegister(PtBrTranslationPath);
 
-        // Default to English. Tr("msgid") falls back to msgid itself if
-        // no translation registered, so an empty .po file degrades
-        // gracefully to English.
-        TranslationServer.SetLocale(EnLocaleCode);
-        _currentLocale = EnLocaleCode;
+        // v1.2 polish #4 (per ADR-0014): locale priority order:
+        //   1. LocalePreferences saved value (user manual override)
+        //   2. OS locale (TranslationServer default / OS.GetLocale())
+        //   3. English (final fallback)
+        //
+        // The save is async so we don't block _Ready on disk I/O.
+        // The async-void signature is the Godot convention for fire-and-
+        // forget autoload init (per Match3Feature._Ready precedent).
+        string chosen = EnLocaleCode;
+        try
+        {
+            var saved = await LocalePreferences.LoadAsync();
+            if (saved.Locale != null && saved.Locale != LocalePreferences.AutoLocaleSentinel)
+            {
+                chosen = saved.Locale;
+                GD.Print($"[LocaleManager] using saved preference: {chosen}");
+            }
+            else
+            {
+                chosen = ResolveOsLocale();
+                GD.Print($"[LocaleManager] no saved preference, using OS locale: {chosen}");
+            }
+        }
+        catch (System.Exception e)
+        {
+            GD.PushWarning($"[LocaleManager] locale resolution failed: {e.Message}, falling back to {EnLocaleCode}");
+            chosen = EnLocaleCode;
+        }
 
-        GD.Print($"[LocaleManager] loaded, default locale = {EnLocaleCode}");
+        TranslationServer.SetLocale(chosen);
+        _currentLocale = chosen;
+
+        GD.Print($"[LocaleManager] loaded, active locale = {_currentLocale}");
+    }
+
+    /// <summary>
+    /// Picks the best-matching locale from the OS-reported locale string
+    /// (e.g. <c>"en_US"</c>, <c>"es_MX"</c>, <c>"pt_BR"</c>) against
+    /// the 3 supported locales. Returns <see cref="EnLocaleCode"/> when
+    /// no match.
+    /// </summary>
+    private static string ResolveOsLocale()
+    {
+        var osLocale = OS.GetLocale(); // e.g. "en_US", "es_MX", "pt_BR"
+        if (string.IsNullOrEmpty(osLocale)) return EnLocaleCode;
+
+        // Match by 2-letter primary subtag first ("es_MX" → "es").
+        var primary = osLocale.Length >= 2 ? osLocale.Substring(0, 2) : osLocale;
+        return primary switch
+        {
+            "es" => EsLocaleCode,
+            "pt" => PtBrLocaleCode,
+            _    => EnLocaleCode,
+        };
     }
 
     /// <summary>

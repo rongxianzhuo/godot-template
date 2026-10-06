@@ -74,3 +74,45 @@ msgstr "Puntuación: {0} — {1} de {2} movimientos usados"
 #: src/Features/Splash/SplashScreen.tscn
 msgid "60 Levels · 3 Themes"
 msgstr "60 Niveles · 3 Mundos"
+
+# i18n key: settings.title
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:96
+msgid "settings.title"
+msgstr "Configuración"
+
+# i18n key: settings.language
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:118
+msgid "settings.language"
+msgstr "Idioma"
+
+# i18n key: settings.apply
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:159
+msgid "Apply"
+msgstr "Aplicar"
+
+# i18n key: settings.cancel
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:171
+msgid "Cancel"
+msgstr "Cancelar"
+
+# i18n key: settings.english
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:137
+msgid "English"
+msgstr "English"
+
+# i18n key: settings.spanish
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:138
+msgid "Español"
+msgstr "Español"
+
+# i18n key: settings.portuguese
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:139
+msgid "Português"
+msgstr "Português"

@@ -1,6 +1,7 @@
 using Godot;
 using GameFramework;
 using GodotTemplate.Core;
+using GodotTemplate.Features.Settings;
 
 namespace GodotTemplate.Features.Match3.Screens;
 
@@ -23,6 +24,8 @@ namespace GodotTemplate.Features.Match3.Screens;
 ///       ├── Spacer (40 px)
 ///       ├── Play Again button
 ///       ├── Spacer (20 px)
+///       ├── Settings button  (v1.2 polish #4, opens SettingsScreen modal)
+///       ├── Spacer (10 px)
 ///       └── Main Menu button
 /// </code>
 /// </summary>
@@ -31,6 +34,15 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
     private Label _headlineLabel = null!;
     private Label _subtitleLabel = null!;
     private Button _playAgainButton = null!;
+
+    // Last shown args — used to re-render labels after a locale change
+    // (SettingsScreen returns to this EndScreen; if user picked a new
+    // locale, we need to re-read Tr() for headline + subtitle).
+    private bool _lastWon;
+    private int _lastScore;
+    private int _lastMovesUsed;
+    private int _lastMovesMax;
+    private int _lastLevel;
 
     public EndScreen()
     {
@@ -89,6 +101,16 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         var spacer2 = new Control { CustomMinimumSize = new Vector2(0, 20) };
         center.AddChild(spacer2);
 
+        // v1.2 polish #4 (per ADR-0014): Settings entry point. Opens
+        // SettingsScreen as a modal — on close, end screen stays
+        // (no flow change).
+        var settingsButton = MakeButton(Tr("Settings"));
+        settingsButton.Pressed += OnSettingsPressed;
+        center.AddChild(settingsButton);
+
+        var spacer3 = new Control { CustomMinimumSize = new Vector2(0, 10) };
+        center.AddChild(spacer3);
+
         var mainMenuButton = MakeButton(Tr("Main Menu"));
         mainMenuButton.Pressed += OnMainMenuPressed;
         center.AddChild(mainMenuButton);
@@ -103,6 +125,13 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         // player just finished. Matches GameScreen's theme for visual
         // continuity (e.g. level 25 → Desert on both screens).
         Theme = ThemeBuilder.BuildTheme(ThemeKindUtils.FromLevel(args.Level));
+
+        // Cache args so OnSettingsPressed can re-render after a locale change.
+        _lastWon      = args.Won;
+        _lastScore    = args.FinalScore;
+        _lastMovesUsed = args.MovesUsed;
+        _lastMovesMax = args.MovesMax;
+        _lastLevel    = args.Level;
 
         _headlineLabel.Text = args.Won ? Tr("You Won!") : Tr("Game Over");
         _headlineLabel.AddThemeColorOverride("font_color", args.Won
@@ -124,6 +153,28 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
     {
         GD.Print("[EndScreen] Play Again pressed → CloseScreen(PlayAgain)");
         CloseScreen(EndChoice.PlayAgain);
+    }
+
+    private async void OnSettingsPressed()
+    {
+        GD.Print("[EndScreen] Settings pressed → ShowAsync<SettingsScreen>");
+        // SettingsScreen is modal — ShowAsync returns after user clicks
+        // Apply/Cancel. End screen stays as underlying, modal is dimmed.
+        var result = await ScreenManager.Instance.ShowAsync<SettingsScreen, SettingsArgs, SettingsResult>(
+            new SettingsArgs());
+        if (result.LocaleChanged)
+        {
+            // v1.2 polish #4: re-read Tr() for headline + subtitle so the
+            // new locale is reflected immediately. Tr() does not auto-refresh
+            // already-rendered Labels (per LocaleManager docs caveat) —
+            // callers must re-apply manually.
+            _headlineLabel.Text = _lastWon ? Tr("You Won!") : Tr("Game Over");
+            _subtitleLabel.Text = string.Format(
+                Tr("Score: {0} — {1} of {2} moves used"),
+                _lastScore, _lastMovesUsed, _lastMovesMax);
+            GD.Print($"[EndScreen] locale changed to {result.AppliedLocale}, labels refreshed");
+        }
+        GD.Print("[EndScreen] SettingsScreen closed → returning to end screen");
     }
 
     private void OnMainMenuPressed()
