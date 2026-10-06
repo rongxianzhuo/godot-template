@@ -1,5 +1,7 @@
 using Godot;
+using GameFramework;
 using GodotTemplate.Core;
+using GodotTemplate.Features.Match3.Events;
 
 namespace GodotTemplate.Features.Match3;
 
@@ -12,11 +14,13 @@ namespace GodotTemplate.Features.Match3;
 ///   1. Build the algorithm layer directly.
 ///   2. Verify FillRandomNoOpeningMatch produces a board with zero segments.
 ///   3. Find a legal swap, apply it, verify cascades settle to zero segments.
-///   4. Print PASS/FAIL summary and quit.
+///   4. Verify EventBus path: subscribe to ScoreChanged/MovesChanged, count
+///      publishes; assert >=2 each (Reset + at least one subsequent event).
+///   5. Print PASS/FAIL summary and quit.
 ///
 /// This complements <c>tests/Match3Tests/</c> by exercising the same code in a
 /// real Godot 4 runtime context (catches class-load issues that dotnet run
-/// wouldn't).
+/// wouldn't, plus proves EventBus.Instance is autoloaded + publishes fire).
 /// </summary>
 [GodotFeature(Order = 950, Category = "debug")]
 public partial class Match3SmokeTest : Node
@@ -53,6 +57,15 @@ public partial class Match3SmokeTest : Node
         var board = new Board(seed: 1);
         var engine = new MatchEngine();
         var scores = new ScoreManager();
+
+        // W3+: subscribe via EventBus to verify the W2 publish path round-trips.
+        // Catches a regression where EventBus.Instance is null (autoload missing)
+        // OR where ScoreManager forgot to call Publish.
+        int scoreChangedCount = 0;
+        int movesChangedCount = 0;
+        using var scoreSub = EventBus.Instance.Subscribe<ScoreChanged>(_ => scoreChangedCount++);
+        using var movesSub = EventBus.Instance.Subscribe<MovesChanged>(_ => movesChangedCount++);
+
         scores.Reset(level: 0, movesMax: 20, target: 500);
 
         // 1) Initial fill must have no opening match.
@@ -109,6 +122,17 @@ public partial class Match3SmokeTest : Node
         Require(state.Phase == GamePhase.Playing, "after StartLevel -> Playing");
         state.NotifyWin();
         Require(state.Phase == GamePhase.Won, "after NotifyWin -> Won");
+
+        // 6) EventBus path verification (W3+).
+        //    Reset emits ScoreChanged + MovesChanged (1 each).
+        //    Then N AwardCascade calls (>= 1 cascade) emit ScoreChanged each.
+        //    Then UseMove emits MovesChanged.
+        //    Minimum: 2 ScoreChanged (Reset + >=1 AwardCascade), 2 MovesChanged (Reset + UseMove).
+        Require(scoreChangedCount >= 2,
+            $"EventBus ScoreChanged fired >= 2 (got {scoreChangedCount}: Reset + {scoreChangedCount - 1} cascades)");
+        Require(movesChangedCount >= 2,
+            $"EventBus MovesChanged fired >= 2 (got {movesChangedCount}: Reset + UseMove)");
+        GD.Print($"[Match3SmokeTest] EventBus: ScoreChanged={scoreChangedCount} MovesChanged={movesChangedCount}");
 
         GD.Print($"[Match3SmokeTest] score={scores.Score} moves={scores.Moves}/{scores.MovesMax} target={scores.Target}");
         GD.Print("[Match3SmokeTest] ALL CHECKS PASSED");

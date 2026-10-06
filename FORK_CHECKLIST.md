@@ -32,6 +32,27 @@ grep -E 'MagicMatch|magicstudio|emptygodot|EmptyGodot' export_presets.cfg projec
 # should print nothing
 ```
 
+## 0.5. Migrate off deprecated event pattern (only if forked < v1.0)
+
+The pre-v1.0 event pattern `event Action<T>?` on algorithm classes
+(`GameState.PhaseChanged`, `ScoreManager.ScoreChanged` / `MovesChanged`)
+was deprecated in W2 in favor of `EventBus.Instance.Publish<TEvent>(evt)`.
+After v1.1 ships, those `[Obsolete]` fields will be **removed**.
+
+**If your fork subscribes to those events** (compile-time CS0618 warning):
+
+```bash
+# Find your subscriptions:
+grep -rn 'PhaseChanged\|\.ScoreChanged\|\.MovesChanged' src/
+```
+
+Replace each `+= handler` with `EventBus.Instance.Subscribe<TEvent>(handler)`
+(store the `IDisposable` token as a field; dispose in `_ExitTree`). See
+`AGENTS.md` §"EventBus Migration Recipe" for the full pattern + the
+`feature/eventbus-migration` commit for the reference migration.
+
+Forks that don't use the legacy events can skip this step.
+
 ## 1. Delete demo residue (5 min)
 
 ```bash
