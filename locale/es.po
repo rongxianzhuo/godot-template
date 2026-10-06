@@ -68,3 +68,9 @@ msgstr "Salir"
 #: src/Features/Match3/Screens/EndScreen.cs:107
 msgid "Score: {0} — {1} of {2} moves used"
 msgstr "Puntuación: {0} — {1} de {2} movimientos usados"
+
+# i18n key: splash.subtitle
+#. Text assignment (splash B-v3 scene)
+#: src/Features/Splash/SplashScreen.tscn
+msgid "60 Levels · 3 Themes"
+msgstr "60 Niveles · 3 Mundos"

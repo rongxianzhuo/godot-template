@@ -71,3 +71,9 @@ msgstr "Play"
 #: src/Features/Match3/Screens/TitleScreen.cs:81
 msgid "Quit"
 msgstr "Quit"
+
+# i18n key: splash.subtitle
+#. Text assignment (splash B-v3 scene)
+#: src/Features/Splash/SplashScreen.tscn
+msgid "60 Levels · 3 Themes"
+msgstr "60 Levels · 3 Themes"
