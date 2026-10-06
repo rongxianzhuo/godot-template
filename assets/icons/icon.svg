@@ -1,1 +1,151 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="124" height="124" x="2" y="2" fill="#363d52" stroke="#212532" stroke-width="4" rx="14"/><g fill="#fff" transform="translate(64 64)"><path d="M-30 -10 H -20 V -8 H -18 V -10 H -10 V -8 H -8 V -10 H 10 V 10 H -30 Z" fill="#478cbf"/><path d="M-28 -8 H 8 V 8 H -28 Z" fill="#fff"/><circle cx="-20" cy="-4" r="1.5" fill="#478cbf"/><circle cx="0" cy="-4" r="1.5" fill="#478cbf"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Christine's ICON v1 — FINAL — for assets/icons/icon.svg
+  =====================================================
+  Match3 "Magic Match" app icon, based on proposal #4 with 3 Mark-requested micro-adjustments:
+
+  (A) Outer stars pulled INWARD into the Android adaptive-icon safe zone
+      (inner 66% of canvas = x/y in [174, 850] for 1024×1024).
+      Reduced from 4 corner sparkles to 2 inside-zone sparkles + 1 small dot.
+  (B) Added a soft GLOW OUTLINE around the gem silhouette via feGaussianBlur + feMerge.
+      Helps 48 px launcher legibility (Mark's request).
+  (C) Added a COOL BLUE-PURPLE INNER HIGHLIGHT inside the gem for layered depth,
+      not just the pure-white highlight from v0.
+
+  Canvas: 1024×1024, Android adaptive-icon safe (rounded square, rx=180).
+  Pure vector — fork-friendly (only 6 hex colors to change for a re-skin).
+  Color palette (locked to ART_SPEC.md §3.1):
+      #88489B  brand purple (gem mid)
+      #C896E0  brand light purple (gem top highlight, BG inner)
+      #4A2A7A  gem deep (gem bottom)
+      #2A0F4A  gem outline (dark)
+      #5D7FE6  cool blue (new, inner highlight tone)
+      #1A0F2E  bg deep
+      #6B3FA0  bg mid
+      #FFFFFF  white (sparkles, hard highlight)
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+
+  <defs>
+    <!-- BG radial: matches bg_title vibe -->
+    <radialGradient id="bg" cx="50%" cy="50%" r="65%">
+      <stop offset="0%"   stop-color="#6B3FA0"/>
+      <stop offset="60%"  stop-color="#4A2D6E"/>
+      <stop offset="100%" stop-color="#1A0F2E"/>
+    </radialGradient>
+
+    <!-- Sunburst rays -->
+    <linearGradient id="ray" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#A878D8" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#4A2D6E" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Gem body vertical gradient -->
+    <linearGradient id="gem" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%"   stop-color="#C896E0"/>
+      <stop offset="40%"  stop-color="#88489B"/>
+      <stop offset="100%" stop-color="#4A2A7A"/>
+    </linearGradient>
+
+    <!-- (C) NEW: cool blue-purple inner highlight (Mark request #3) -->
+    <radialGradient id="coolHighlight" cx="65%" cy="20%" r="55%">
+      <stop offset="0%"   stop-color="#7BA8FF" stop-opacity="0.75"/>
+      <stop offset="35%"  stop-color="#5D7FE6" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#5D7FE6" stop-opacity="0.0"/>
+    </radialGradient>
+
+    <!-- Inner facet: white glow upper-left -->
+    <radialGradient id="facet" cx="35%" cy="30%" r="55%">
+      <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.45"/>
+      <stop offset="40%"  stop-color="#FFFFFF" stop-opacity="0.0"/>
+    </radialGradient>
+
+    <!-- (B) NEW: gem glow outline filter (Mark request #2) -->
+    <filter id="gemGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="22" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Reusable teardrop path for the gem silhouette -->
+    <path id="gemSilhouette"
+          d="M 512 220
+             C 380 370 295 540 320 690
+             C 345 800 445 855 512 855
+             C 579 855 679 800 704 690
+             C 729 540 644 370 512 220 Z"/>
+  </defs>
+
+  <!-- ============== BACKGROUND ============== -->
+  <rect width="1024" height="1024" rx="180" ry="180" fill="url(#bg)"/>
+
+  <!-- Sunburst rays (8 wedges, all inside safe zone) -->
+  <g transform="translate(512 512)">
+    <g transform="rotate(0)">
+      <polygon points="0,0 -120,-340 120,-340" fill="url(#ray)"/>
+    </g>
+    <g transform="rotate(45)">
+      <polygon points="0,0 -90,-340 90,-340" fill="url(#ray)" opacity="0.7"/>
+    </g>
+    <g transform="rotate(90)">
+      <polygon points="0,0 -120,-340 120,-340" fill="url(#ray)" opacity="0.5"/>
+    </g>
+    <g transform="rotate(135)">
+      <polygon points="0,0 -90,-340 90,-340" fill="url(#ray)" opacity="0.7"/>
+    </g>
+  </g>
+
+  <!-- ============== GEM with glow filter ============== -->
+  <!-- (B) Soft glow underlay: a slightly larger dark purple shape (gives the glow halo a colored core) -->
+  <g filter="url(#gemGlow)">
+    <!-- Dark outline backing — slightly larger than gem silhouette so the glow has color -->
+    <path d="M 512 195
+             C 370 355 285 535 310 700
+             C 335 815 445 880 512 880
+             C 579 880 689 815 714 700
+             C 739 535 654 355 512 195 Z"
+          fill="#2A0F4A"/>
+
+    <!-- Gem body -->
+    <use href="#gemSilhouette" fill="url(#gem)"/>
+
+    <!-- White facet highlight (upper-left) -->
+    <use href="#gemSilhouette" fill="url(#facet)"/>
+
+    <!-- (C) NEW: cool blue-purple inner highlight (upper-right side, contrast to white) -->
+    <use href="#gemSilhouette" fill="url(#coolHighlight)"/>
+
+    <!-- Hard white crescent highlight (upper-left) -->
+    <path d="M 430 380
+             C 410 440 405 500 425 530
+             C 450 540 470 510 470 470
+             C 470 430 450 400 430 380 Z"
+          fill="#FFFFFF" opacity="0.85"/>
+
+    <!-- Small white dot highlight (lower) -->
+    <ellipse cx="445" cy="595" rx="14" ry="20" fill="#FFFFFF" opacity="0.7"/>
+  </g>
+
+  <!-- ============== (A) SPARKLES — pulled inward into safe zone ============== -->
+  <!-- Safe zone: x/y in [174, 850] for 1024×1024 canvas -->
+  <g fill="#FFFFFF">
+    <!-- Left-side sparkle (large, inside zone) -->
+    <g transform="translate(265 320)">
+      <path d="M 0 -32 L 6 -6 L 32 0 L 6 6 L 0 32 L -6 6 L -32 0 L -6 -6 Z"/>
+      <circle cx="0" cy="0" r="3"/>
+    </g>
+    <!-- Right-side sparkle (medium, inside zone) -->
+    <g transform="translate(760 720) scale(0.85)">
+      <path d="M 0 -32 L 6 -6 L 32 0 L 6 6 L 0 32 L -6 6 L -32 0 L -6 -6 Z"/>
+    </g>
+    <!-- Tiny dot upper-right (well inside safe zone) -->
+    <circle cx="700" cy="265" r="5" opacity="0.85"/>
+    <!-- Tiny dot lower-left (well inside safe zone) -->
+    <circle cx="265" cy="760" r="4" opacity="0.7"/>
+  </g>
+
+</svg>
