@@ -51,6 +51,8 @@ Android SDK / NDK、Gradle 路径选择、签名、导出预设 —— 你 clone
 加新功能的方式：在 `src/Features/<Name>/` 下丢一个标了 `[GodotFeature]` 的 C# 类，
 Bootstrap 启动时自动加载。详见 [`AGENTS.md`](./AGENTS.md)。
 
+**🍴 Fork 这个项目**：[`FORK_CHECKLIST.md`](./FORK_CHECKLIST.md)（step-by-step 清单） + [`docs/fork-guide-examples.md`](./docs/fork-guide-examples.md)（具体 walkthrough + 示例输出 + 7 个常见坑）
+
 ### 🚀 本地开发（桌面）
 
 需要装 Godot Mono 编辑器（[官网下载](https://godotengine.org/download/)，
