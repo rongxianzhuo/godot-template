@@ -12,54 +12,54 @@ msgstr ""
 #. Text assignment
 #: src/Features/Match3/GameScenes.cs:41
 msgid "Magic Match"
-msgstr ""
+msgstr "Magic Match"
 
 # i18n key: endscreen.game_over
 #. Text assignment
 #: src/Features/Match3/GameScenes.cs:82
 msgid "Game Over"
-msgstr ""
+msgstr "Fim de jogo"
 
 # i18n key: endscreen.main_menu
 #. Button factory call
 #: src/Features/Match3/GameScenes.cs:97
 msgid "Main Menu"
-msgstr ""
+msgstr "Menu principal"
 
 # i18n key: endscreen.play_again
 #. Button factory call
 #: src/Features/Match3/GameScenes.cs:94
 msgid "Play Again"
-msgstr ""
+msgstr "Jogar novamente"
 
 # i18n key: endscreen.you_won
 #. Text assignment
 #: src/Features/Match3/GameScenes.cs:82
 msgid "You Won!"
-msgstr ""
+msgstr "Você ganhou!"
 
 # i18n key: hud.moves (1 placeholder)
 #. Text assignment
 #: src/Features/Match3/GameScenes.cs,
 #: src/Features/Match3/Match3Feature.cs:120:114
 msgid "Moves: {0}"
-msgstr ""
+msgstr "Movimentos: {0}"
 
 # i18n key: hud.score
 #. Text assignment
 #: src/Features/Match3/GameScenes.cs,
 #: src/Features/Match3/Match3Feature.cs:119:109
 msgid "Score: {0}"
-msgstr ""
+msgstr "Pontuação: {0}"
 
 # i18n key: title.play
 #. Button factory call
 #: src/Features/Match3/GameScenes.cs:53
 msgid "Play"
-msgstr ""
+msgstr "Jogar"
 
 # i18n key: title.quit
 #. Button factory call
 #: src/Features/Match3/GameScenes.cs:56
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
