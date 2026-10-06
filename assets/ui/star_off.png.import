@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://christine_star_off_v1"
-path="res://.godot/imported/star_off.png-00000000000000000000000000000002.ctex"
+uid="uid://b48uhf2rgbdke"
+path="res://.godot/imported/star_off.png-d498ce5f26db2740f69720c3b670da1c.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/ui/star_off.png"
-dest_files=["res://.godot/imported/star_off.png-00000000000000000000000000000002.ctex"]
+dest_files=["res://.godot/imported/star_off.png-d498ce5f26db2740f69720c3b670da1c.ctex"]
 
 [params]
 
