@@ -205,6 +205,25 @@ def scan_file(file_path: Path) -> list:
                 })
             continue
 
+        # Pattern 4: Tr("...", ...) or Tr($"...{var}...", ...) — added v1.1
+        # when scenes migrated from `Text = "..."` to `Text = Tr("...")`
+        # (per Godot TranslationServer API). Captures the first string
+        # literal argument. Multiple Tr() on same line (ternary) handled by
+        # the broader regex scan; this catches the common case.
+        m = re.search(r'\bTr\s*\(\s*\$?\"((?:[^\"\\]|\\.)*)\"', line)
+        if m:
+            raw_text = m.group(1)
+            text, placeholders = extract_interpolated(raw_text)
+            if not is_skippable(text):
+                entries.append({
+                    'msgid': text,
+                    'file': str(file_path),
+                    'line': i,
+                    'context': 'Tr() translation call',
+                    'placeholders': placeholders,
+                })
+            continue
+
     return entries
 
 

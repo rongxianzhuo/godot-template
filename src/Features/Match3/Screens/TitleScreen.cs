@@ -60,7 +60,7 @@ public sealed partial class TitleScreen : Screen
         var titleLabel = new Label
         {
             Name = "TitleLabel",
-            Text = "Magic Match",
+            Text = Tr("Magic Match"),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
         };
@@ -71,14 +71,14 @@ public sealed partial class TitleScreen : Screen
         var spacer = new Control { CustomMinimumSize = new Vector2(0, 40) };
         center.AddChild(spacer);
 
-        _playButton = MakeButton("Play");
+        _playButton = MakeButton(Tr("Play"));
         _playButton.Pressed += OnPlayPressed;
         center.AddChild(_playButton);
 
         var spacer2 = new Control { CustomMinimumSize = new Vector2(0, 20) };
         center.AddChild(spacer2);
 
-        var quitButton = MakeButton("Quit");
+        var quitButton = MakeButton(Tr("Quit"));
         quitButton.Pressed += OnQuitPressed;
         center.AddChild(quitButton);
     }
