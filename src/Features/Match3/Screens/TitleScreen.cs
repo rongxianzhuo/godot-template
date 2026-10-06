@@ -33,9 +33,13 @@ public sealed partial class TitleScreen : Screen
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         MouseFilter = MouseFilterEnum.Stop; // catch clicks so unfocused UI doesn't leak
 
-        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
-        // (Title label, Play/Quit buttons). See src/Core/ThemeBuilder.cs.
-        Theme = ThemeBuilder.BuildCosmicTheme();
+        // v1.2 polish #2: per-theme font (Forest as default — game hasn't
+        // started, so no level-based theme context yet). EndScreen uses
+        // the same Forest theme for visual continuity on Main Menu return.
+        // v1.1 used BuildCosmicTheme() (single DefaultFont = Fredoka-Bold);
+        // v1.2 BuildTheme(Forest) is equivalent for Forest (Fredoka-Bold
+        // is the Forest Primary font per Christine font-per-theme-spec §3).
+        Theme = ThemeBuilder.BuildTheme(ThemeKind.Forest);
 
         // Background (reuses Christine's bg_title.png per SpritePaths)
         var bg = new TextureRect

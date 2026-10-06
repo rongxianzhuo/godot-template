@@ -71,3 +71,9 @@ msgstr "Play"
 #: src/Features/Match3/Screens/TitleScreen.cs:81
 msgid "Quit"
 msgstr "Quit"
+
+# i18n key: splash.subtitle
+#. .tscn Label Text (Godot auto_translate_mode=1)
+#: assets/scenes/SplashScreen.tscn:59
+msgid "splash.subtitle"
+msgstr "60 Levels · 3 Themes"

@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://christine_nunito-bold_v1_pertheme"
-path="res://.godot/imported/Nunito-Bold.ttf-00000000000000000000000000000012.fontdata"
+uid="uid://dkitcl73uvvl1"
+path="res://.godot/imported/Nunito-Bold.ttf-1a318852ab28f7fd939d635a6c4a6f90.fontdata"
 
 [deps]
 
 source_file="res://assets/fonts/ocean/Nunito-Bold.ttf"
-dest_files=["res://.godot/imported/Nunito-Bold.ttf-00000000000000000000000000000012.fontdata"]
+dest_files=["res://.godot/imported/Nunito-Bold.ttf-1a318852ab28f7fd939d635a6c4a6f90.fontdata"]
 
 [params]
 

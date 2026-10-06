@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://christine_fredoka-bold_v1_pertheme"
-path="res://.godot/imported/Fredoka-Bold.ttf-00000000000000000000000000000012.fontdata"
+uid="uid://do70w4i6t1xy6"
+path="res://.godot/imported/Fredoka-Bold.ttf-7a10e30ce2bf0574cbfa7643b6c8b827.fontdata"
 
 [deps]
 
 source_file="res://assets/fonts/forest/Fredoka-Bold.ttf"
-dest_files=["res://.godot/imported/Fredoka-Bold.ttf-00000000000000000000000000000012.fontdata"]
+dest_files=["res://.godot/imported/Fredoka-Bold.ttf-7a10e30ce2bf0574cbfa7643b6c8b827.fontdata"]
 
 [params]
 

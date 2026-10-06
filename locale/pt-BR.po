@@ -68,3 +68,9 @@ msgstr "Sair"
 #: src/Features/Match3/Screens/EndScreen.cs:107
 msgid "Score: {0} — {1} of {2} moves used"
 msgstr "Pontuação: {0} — {1} de {2} movimentos usados"
+
+# i18n key: splash.subtitle
+#. .tscn Label Text (Godot auto_translate_mode=1)
+#: assets/scenes/SplashScreen.tscn:59
+msgid "splash.subtitle"
+msgstr "60 Níveis · 3 Temas"

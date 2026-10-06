@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://christine_nunito-medium_v1_pertheme"
-path="res://.godot/imported/Nunito-Medium.ttf-00000000000000000000000000000012.fontdata"
+uid="uid://dd145yirnmckp"
+path="res://.godot/imported/Nunito-Medium.ttf-2de26d146d689173b43616494b96f5f9.fontdata"
 
 [deps]
 
 source_file="res://assets/fonts/desert/Nunito-Medium.ttf"
-dest_files=["res://.godot/imported/Nunito-Medium.ttf-00000000000000000000000000000012.fontdata"]
+dest_files=["res://.godot/imported/Nunito-Medium.ttf-2de26d146d689173b43616494b96f5f9.fontdata"]
 
 [params]
 
