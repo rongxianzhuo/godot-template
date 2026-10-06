@@ -63,7 +63,7 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         _headlineLabel = new Label
         {
             Name = "HeadlineLabel",
-            Text = "Game Over",
+            Text = Tr("Game Over"),
             HorizontalAlignment = HorizontalAlignment.Center,
         };
         _headlineLabel.AddThemeFontSizeOverride("font_size", 64);
@@ -72,7 +72,7 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         _subtitleLabel = new Label
         {
             Name = "SubtitleLabel",
-            Text = "Score: 0",
+            Text = string.Format(Tr("Score: {0}"), 0),
             HorizontalAlignment = HorizontalAlignment.Center,
         };
         _subtitleLabel.AddThemeFontSizeOverride("font_size", 28);
@@ -82,14 +82,14 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         var spacer = new Control { CustomMinimumSize = new Vector2(0, 40) };
         center.AddChild(spacer);
 
-        _playAgainButton = MakeButton("Play Again");
+        _playAgainButton = MakeButton(Tr("Play Again"));
         _playAgainButton.Pressed += OnPlayAgainPressed;
         center.AddChild(_playAgainButton);
 
         var spacer2 = new Control { CustomMinimumSize = new Vector2(0, 20) };
         center.AddChild(spacer2);
 
-        var mainMenuButton = MakeButton("Main Menu");
+        var mainMenuButton = MakeButton(Tr("Main Menu"));
         mainMenuButton.Pressed += OnMainMenuPressed;
         center.AddChild(mainMenuButton);
     }
@@ -99,12 +99,13 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         GD.Print($"[EndScreen] OnShow(won={args.Won} score={args.FinalScore} " +
                  $"moves={args.MovesUsed}/{args.MovesMax})");
 
-        _headlineLabel.Text = args.Won ? "You Won!" : "Game Over";
+        _headlineLabel.Text = args.Won ? Tr("You Won!") : Tr("Game Over");
         _headlineLabel.AddThemeColorOverride("font_color", args.Won
             ? new Color(0.4f, 1.0f, 0.4f) // green for win
             : new Color(1.0f, 0.4f, 0.4f)); // red for game over
-        _subtitleLabel.Text = $"Score: {args.FinalScore} — " +
-            $"{args.MovesUsed} of {args.MovesMax} moves used";
+        _subtitleLabel.Text = string.Format(
+            Tr("Score: {0} — {1} of {2} moves used"),
+            args.FinalScore, args.MovesUsed, args.MovesMax);
 
         _playAgainButton.GrabFocus();
     }

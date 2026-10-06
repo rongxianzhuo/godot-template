@@ -83,7 +83,7 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
         _scoreLabel = new Label
         {
             Name = "ScoreLabel",
-            Text = "Score: 0",
+            Text = string.Format(Tr("Score: {0}"), 0),
         };
         _scoreLabel.AddThemeFontSizeOverride("font_size", 28);
         _scoreLabel.AddThemeColorOverride("font_color", Colors.White);
@@ -92,7 +92,7 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
         _movesLabel = new Label
         {
             Name = "MovesLabel",
-            Text = "Moves: 0",
+            Text = string.Format(Tr("Moves: {0}"), 0),
         };
         _movesLabel.AddThemeFontSizeOverride("font_size", 28);
         _movesLabel.AddThemeColorOverride("font_color", Colors.White);
@@ -171,7 +171,7 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
 
     private void UpdateHud()
     {
-        if (_scoreLabel != null) _scoreLabel.Text = $"Score: {_scores.Score}";
-        if (_movesLabel != null) _movesLabel.Text = $"Moves: {_scores.Moves}";
+        if (_scoreLabel != null) _scoreLabel.Text = string.Format(Tr("Score: {0}"), _scores.Score);
+        if (_movesLabel != null) _movesLabel.Text = string.Format(Tr("Moves: {0}"), _scores.Moves);
     }
 }

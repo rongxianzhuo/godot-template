@@ -10,56 +10,64 @@ msgstr ""
 
 # i18n key: brand.magic_match
 #. Text assignment
-#: src/Features/Match3/GameScenes.cs:41
+#: src/Features/Match3/Screens/TitleScreen.cs:63
 msgid "Magic Match"
 msgstr "Magic Match"
 
 # i18n key: endscreen.game_over
 #. Text assignment
-#: src/Features/Match3/GameScenes.cs:82
+#: src/Features/Match3/Screens/EndScreen.cs,
+#: src/Features/Match3/Screens/EndScreen.cs:102:66
 msgid "Game Over"
 msgstr "Game Over"
 
 # i18n key: endscreen.main_menu
-#. Button factory call
-#: src/Features/Match3/GameScenes.cs:97
+#. Tr() translation call
+#: src/Features/Match3/Screens/EndScreen.cs:92
 msgid "Main Menu"
 msgstr "Main Menu"
 
 # i18n key: endscreen.play_again
-#. Button factory call
-#: src/Features/Match3/GameScenes.cs:94
+#. Tr() translation call
+#: src/Features/Match3/Screens/EndScreen.cs:85
 msgid "Play Again"
 msgstr "Play Again"
 
 # i18n key: endscreen.you_won
 #. Text assignment
-#: src/Features/Match3/GameScenes.cs:82
+#: src/Features/Match3/Screens/EndScreen.cs:102
 msgid "You Won!"
 msgstr "You Won!"
 
 # i18n key: hud.moves (1 placeholder)
 #. Text assignment
-#: src/Features/Match3/GameScenes.cs,
-#: src/Features/Match3/Match3Feature.cs:120:114
+#: src/Features/Match3/Screens/GameScreen.cs,
+#: src/Features/Match3/Screens/GameScreen.cs:175:95
 msgid "Moves: {0}"
 msgstr "Moves: {0}"
 
-# i18n key: hud.score
+# i18n key: hud.score (1 placeholder)
 #. Text assignment
-#: src/Features/Match3/GameScenes.cs,
-#: src/Features/Match3/Match3Feature.cs:119:109
+#: src/Features/Match3/Screens/EndScreen.cs,
+#: src/Features/Match3/Screens/GameScreen.cs:86,
+#: src/Features/Match3/Screens/GameScreen.cs:174:75
 msgid "Score: {0}"
 msgstr "Score: {0}"
 
+# i18n key: hud.score_2 (3 placeholders)
+#. Tr() translation call
+#: src/Features/Match3/Screens/EndScreen.cs:107
+msgid "Score: {0} — {1} of {2} moves used"
+msgstr "Score: {0} — {1} of {2} moves used"
+
 # i18n key: title.play
-#. Button factory call
-#: src/Features/Match3/GameScenes.cs:53
+#. Tr() translation call
+#: src/Features/Match3/Screens/TitleScreen.cs:74
 msgid "Play"
 msgstr "Play"
 
 # i18n key: title.quit
-#. Button factory call
-#: src/Features/Match3/GameScenes.cs:56
+#. Tr() translation call
+#: src/Features/Match3/Screens/TitleScreen.cs:81
 msgid "Quit"
 msgstr "Quit"
