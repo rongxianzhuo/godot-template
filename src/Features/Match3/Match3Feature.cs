@@ -1,5 +1,8 @@
+using System;
 using Godot;
 using GodotTemplate.Core;
+using GodotTemplate.Features.Match3.Events;
+using GameFramework;
 
 namespace GodotTemplate.Features.Match3;
 
@@ -13,6 +16,10 @@ namespace GodotTemplate.Features.Match3;
 ///   - All UI is built programmatically (no .tscn for game scenes), per AGENTS.md.
 ///   - Sprite paths come from <see cref="SpritePaths"/> (Bev's domain).
 ///   - Scene transitions swap a single child Control inside this feature.
+///
+/// Migration (W2): subscribes to GamePhaseChanged via EventBus.Instance.
+/// Old _state.PhaseChanged subscription kept as fallback for one release
+/// (will be removed when _state.PhaseChanged event is removed in v1.1).
 ///
 /// Scene flow:
 ///   title (Play) -> game (Play button)  -> title (Main Menu)
@@ -33,10 +40,20 @@ public partial class Match3Feature : Node
     private Label? _scoreLabel;
     private Label? _movesLabel;
 
+    // ---- EventBus subscription (W2) ----
+    private IDisposable? _phaseSub;
+
     public override void _Ready()
     {
         GD.Print("[Match3Feature] _Ready — wiring algorithm + UI");
+
+        // Canonical event path (W2+): subscribe via EventBus.
+        _phaseSub = EventBus.Instance.Subscribe<GamePhaseChanged>(OnPhaseChangedFromBus);
+
+        // Fallback (back-compat for v1.0 forks still using old event):
+#pragma warning disable CS0618 // 'PhaseChanged' is obsolete but kept for one release
         _state.PhaseChanged += OnPhaseChanged;
+#pragma warning restore CS0618
 
         // Start at title screen.
         ShowTitle();
@@ -131,7 +148,13 @@ public partial class Match3Feature : Node
         ));
     }
 
-    // ---- GameState -> UI mapping ----
+    // ---- GameState -> UI mapping (canonical EventBus handler, W2+) ----
+    private void OnPhaseChangedFromBus(GamePhaseChanged evt)
+    {
+        OnPhaseChanged(evt.NewPhase);
+    }
+
+    // ---- GameState -> UI mapping (legacy fallback, [Obsolete] in W2+) ----
     private void OnPhaseChanged(GamePhase newPhase)
     {
         switch (newPhase)
@@ -170,7 +193,11 @@ public partial class Match3Feature : Node
 
     public override void _ExitTree()
     {
+        _phaseSub?.Dispose();
+        _phaseSub = null;
+#pragma warning disable CS0618
         _state.PhaseChanged -= OnPhaseChanged;
+#pragma warning restore CS0618
         GD.Print("[Match3Feature] _ExitTree — clean");
     }
 }

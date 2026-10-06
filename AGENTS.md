@@ -119,9 +119,17 @@ Ties broken by full class name (ordinal).
 
 Features should not reference each other directly. Use one of:
 
-- **Signals** on a shared `EventBus` autoload (recommended for cross-cutting events)
-- **Public methods** exposed via the Bootstrap (TBD — add when needed)
+- **`EventBus.Instance.Publish<TEvent>(evt)` + `Subscribe<TEvent>(handler)`** (canonical,
+  recommended — GodotFramework v0.4-alpha; see `src/Features/Match3/Events/GameEvents.cs`
+  for the record-struct pattern)
 - **Godot Groups / `GetTree().GetNodesInGroup()`** (for runtime queries)
+- **Public methods** exposed via the Bootstrap (TBD — add when needed)
+
+> **Old pattern (deprecated, removed in v1.1)**: bare C# `event Action<T>` /
+> `event Action<T1, T2>` on algorithm classes (e.g. `GameState.PhaseChanged`,
+> `ScoreManager.ScoreChanged`). Migrated to EventBus in W2 — keep old events
+> `[Obsolete]` for one release window so forks can transition. See
+> `feature/eventbus-migration` commit history for the migration recipe.
 
 ## When You Might Be Tempted to Edit a .tscn
 
@@ -223,9 +231,35 @@ forbid the obvious anti-pattern: `featureA._featureB.DoX()`. Codify it:
 > breaks Bootstrap's reflection-based loading, and makes refactoring
 > impossible.
 >
-> **Correct**: communicate via framework `EventBus` (v0.3, see Francisco),
+> **Correct**: communicate via framework `EventBus.Instance.Publish<TEvent>(evt)`
+> + `Subscribe<TEvent>(handler)` (v0.4-alpha in `addons/godot-framework`),
 > services registered in `GameFramework.Instance.Services`, or Godot
 > signals/groups.
+
+#### EventBus Migration Recipe (W2+)
+
+For features that previously held typed refs OR subscribed to legacy
+`event Action<T>` fields:
+
+```csharp
+// 1. Define the event type (prefer record struct, in your feature's Events folder):
+public readonly record struct MyEvent(int SomeValue);
+
+// 2. Publisher: where the event source lives (algorithm class or feature):
+using GameFramework;
+using MyFeature.Events;
+EventBus.Instance.Publish(new MyEvent(value: 42));
+
+// 3. Subscriber: where the event consumer lives (usually another feature):
+using var sub = EventBus.Instance.Subscribe<MyEvent>(evt =>
+    GD.Print($"got MyEvent: {evt.SomeValue}"));
+// sub auto-unsubscribes when scope exits — no leak even on reload
+```
+
+> **Note**: `EventBus` is autoloaded via `project.godot`
+> (`EventBus="*res://addons/godot-framework/src/GameFramework/EventBus.cs"`).
+> If you remove it from autoload, `EventBus.Instance` is null and publish
+> will throw NullReferenceException. Keep the autoload.
 
 ### Dev-only features — `Match3SmokeTest` pattern
 
