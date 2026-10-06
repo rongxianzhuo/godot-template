@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://christine_level_select_bg_v1"
-path="res://.godot/imported/level_select_bg.png-00000000000000000000000000000003.ctex"
+uid="uid://cgo2523ila7lo"
+path="res://.godot/imported/level_select_bg.png-f011d8020c5d2418dfdf3ef891e04077.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/ui/level_select_bg.png"
-dest_files=["res://.godot/imported/level_select_bg.png-00000000000000000000000000000003.ctex"]
+dest_files=["res://.godot/imported/level_select_bg.png-f011d8020c5d2418dfdf3ef891e04077.ctex"]
 
 [params]
 
