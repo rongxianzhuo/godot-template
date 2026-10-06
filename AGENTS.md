@@ -22,6 +22,9 @@ mappings, `ext_resource` references, anchor data, and node tree shape. Hand-edit
 is fragile: the editor may rewrite or invalidate the file on next save, and UID
 consistency breaks silently.
 
+**Exception**: `assets/scenes/SplashScreen.tscn` (and its `.uid` sidecar)
+**IS allowed to be hand-edited** — see `.tscn Exception` section below.
+
 **`*.cs.uid`** — Godot 4.4+ source-generator sidecar. Each `*.cs` file under
 `src/` has a matching `*.cs.uid` with a single line:
 
@@ -45,6 +48,44 @@ configure them, and `AddChild()`.
 If you genuinely need to load a pre-authored scene (e.g. for a complex visual
 asset the editor handled), do it via `GD.Load<PackedScene>("res://path.tscn")`
 **at runtime** — don't write to the .tscn source.
+
+#### `.tscn` Exception — `assets/scenes/SplashScreen.tscn` (v1.1+)
+
+**`assets/scenes/SplashScreen.tscn` IS allowed to be hand-edited** —
+explicit exception per Mark D+17 approval:
+
+- **Why**: splash uses Godot native scene composition (TextureRects for
+  bg + icon, Labels for title + subtitle, HBoxContainer of ColorRects
+  for the 5 loading dots). Programmatic construction (`new Control()` +
+  `AddChild` per element) is unstable across Godot 4.7.x patch versions
+  because `_Ready` ordering of the control chain depends on editor
+  Anchor + Layout being applied before `AddChild`. A pre-authored `.tscn`
+  guarantees the Anchor/Layout is baked in before the engine loads it.
+
+- **Who can edit**: Jacob (godot-template maintainer) + Mark approval.
+  Forks inheriting this template: don't edit — replace splash with your
+  own scene or delete it.
+
+- **Pair-commit rule**: `SplashScreen.tscn` and `SplashScreen.tscn.uid`
+  must be committed together. The `.uid` sidecar holds the real Godot-
+  generated UID that cross-references the scene from `project.godot
+  [application] run/main_scene`. If you change the `.tscn` significantly,
+  Godot may regenerate the `.uid` — re-run `godot --headless --import`
+  and commit the resulting `.uid`.
+
+- **UID fix-on-main-before-merge**: when merging a feature branch that
+  changes the splash scene, follow the same pattern as PNG UIDs (D+7
+  rule): merge `main` into the feature branch FIRST, then run
+  `godot --headless --import`, then commit any UID sidecar changes,
+  THEN merge the feature branch into main. Otherwise the `.tscn` UID
+  may collide with main's stale UID.
+
+- **Why NOT Bootstrap / Feature pattern**: the splash is intentionally
+  NOT a `[GodotFeature]`. It needs to run BEFORE Bootstrap instantiates
+  Match3Feature, and it needs to control its own lifecycle (transition
+  via `ChangeSceneToFile` after a timer). Splash runs as the
+  `run/main_scene`, then transitions to `res://src/Main.tscn` (which
+  loads Bootstrap → features).
 
 ### ✅ FREE TO EDIT
 
