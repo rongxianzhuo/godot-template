@@ -54,10 +54,16 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         MouseFilter = MouseFilterEnum.Stop;
 
-        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
-        // (Background, HUD Score/Moves labels, BoardView). See
-        // src/Core/ThemeBuilder.cs.
-        Theme = ThemeBuilder.BuildCosmicTheme();
+        // v1.2 polish #2: per-theme font based on the level we're about
+        // to start. Game-level 1-20 = Forest (Fredoka-Bold + Nunito-Regular),
+        // 21-40 = Desert (SemiBold + Medium), 41-60 = Ocean (Bold + Bold).
+        // Theme is set in constructor with a default Forest — OnShow will
+        // override with the level-based theme once args arrive.
+        //
+        // Why a default here? Theme must be set BEFORE children are added
+        // so they inherit via Control.Theme cascading. We don't have args
+        // yet in constructor, so default to Forest; OnShow will reset.
+        Theme = ThemeBuilder.BuildTheme(ThemeKind.Forest);
 
         // Background (reuses Christine's bg_game.png per SpritePaths)
         var bg = new TextureRect
@@ -108,6 +114,11 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
     {
         GD.Print($"[GameScreen] OnShow(level={args.Level})");
 
+        // v1.2 polish #2: override theme with level-derived one. We have
+        // args.Level now (didn't in constructor — see ThemeBuilder note).
+        // ThemeKindUtils.FromLevel: 0-19=Forest, 20-39=Desert, 40+=Ocean.
+        Theme = ThemeBuilder.BuildTheme(ThemeKindUtils.FromLevel(args.Level));
+
         // Fresh algorithm per game — no shared state across the loop.
         _board = new Board();
         _engine = new MatchEngine();
@@ -154,7 +165,8 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
                 Won: true,
                 Score: _scores.Score,
                 MovesUsed: _scores.MovesMax - _scores.Moves,
-                MovesMax: _scores.MovesMax));
+                MovesMax: _scores.MovesMax,
+                Level: _scores.CurrentLevel));
             return;
         }
 
@@ -165,7 +177,8 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
                 Won: false,
                 Score: _scores.Score,
                 MovesUsed: _scores.MovesMax,
-                MovesMax: _scores.MovesMax));
+                MovesMax: _scores.MovesMax,
+                Level: _scores.CurrentLevel));
         }
     }
 

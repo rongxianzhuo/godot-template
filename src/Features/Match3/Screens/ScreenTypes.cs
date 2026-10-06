@@ -18,14 +18,20 @@ public readonly record struct GameStartArgs(int Level);
 /// <see cref="MovesUsed"/> is included so EndScreen can show "12 of 20
 /// moves used" — useful context for the "out of moves" lose state.
 /// </summary>
-public readonly record struct GameResult(bool Won, int Score, int MovesUsed, int MovesMax);
+public readonly record struct GameResult(bool Won, int Score, int MovesUsed, int MovesMax, int Level);
 
 /// <summary>
 /// Argument passed into <see cref="EndScreen"/> on open. Carries the
 /// outcome from GameScreen so EndScreen can render the right headline
 /// ("You Won!" green vs "Game Over" red) and the final score.
+///
+/// <para>
+/// v1.2 polish #2: also carries <see cref="Level"/> so <see cref="EndScreen"/>
+/// can apply the same per-theme font as the <see cref="GameScreen"/> that
+/// just closed (e.g. level 25 → Desert theme on both Game + End screens).
+/// </para>
 /// </summary>
-public readonly record struct EndScreenArgs(bool Won, int FinalScore, int MovesUsed, int MovesMax);
+public readonly record struct EndScreenArgs(bool Won, int FinalScore, int MovesUsed, int MovesMax, int Level);
 
 /// <summary>
 /// Choice returned from <see cref="EndScreen"/> on close. Indicates

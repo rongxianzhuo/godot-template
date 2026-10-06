@@ -14,6 +14,8 @@ Patterns extracted:
     Text = $"Score: {var}"  (interpolated, converted to "Score: {0}")
     Title = "..." / Hint = "..." / PlaceholderText = "..."
     MakeButton("...", ...)  (button factory call, extracts 1st string arg)
+    Tr("...")               (W4 v1.1 added — runtime translation calls)
+    .tscn Text = "..."      (v1.2 added — Godot auto_translate_mode=1 labels)
 
 Patterns skipped:
     Name = "..."            (Node names like TitleScreen, ScoreLabel)
@@ -36,7 +38,7 @@ Dependencies:
     polib (Python PO library) - install via `pip install polib`
 
 Author: Christine (MagicStudio Artist)
-Date: 2026-10-06 (D+13)
+Date: 2026-10-06 (D+13, W4 update: Pattern 5 .tscn scanner by Jacob)
 """
 
 import argparse
@@ -227,6 +229,43 @@ def scan_file(file_path: Path) -> list:
     return entries
 
 
+def scan_tscn_file(file_path: Path) -> list:
+    """Scan a .tscn (Godot scene) file for translatable Text properties.
+
+    v1.2 polish #3 (splash i18n): labels in .tscn that have
+    `auto_translate_mode = 1` get translated at runtime via Godot's
+    TranslationServer. The .tscn Text value IS the msgid (lookup key).
+    This scanner picks up those Text lines so they appear in the .po file.
+
+    Recognizes: `[node ...] ... text = "..." ... auto_translate_mode = 1`
+    (within a contiguous block; we don't try to enforce the
+    auto_translate_mode presence in v1.2 — we extract ALL Text lines and
+    rely on the .po entries being looked up only when auto_translate_mode
+    is set, so noise is bounded).
+    """
+    entries = []
+    with open(file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+    # Pattern 5: text = "..." (inside a [node ...] block in .tscn).
+    # Captures the literal text following `text =` (without interpolation
+    # support — .tscn text is always literal, no `$` prefix).
+    for i, line in enumerate(lines, start=1):
+        m = re.search(r'^\s*text\s*=\s*"([^"]+)"', line)
+        if m:
+            text = m.group(1)
+            if not is_skippable(text):
+                entries.append({
+                    'msgid': text,
+                    'file': str(file_path),
+                    'line': i,
+                    'context': '.tscn Text property (Godot auto_translate_mode=1)',
+                    'placeholders': 0,
+                })
+
+    return entries
+
+
 def dedupe_keys(entries: list) -> dict:
     """Group entries by suggested key, dedupe msgid; resolve conflicts.
 
@@ -297,11 +336,13 @@ def main():
     parser.add_argument('--src', default='src', help='Source directory (default: src)')
     parser.add_argument('--output', default='locale/en.po', help='Output PO file (default: locale/en.po)')
     parser.add_argument('--language', default='en', help='Target language code (default: en)')
+    parser.add_argument('--tscn-dir', default='assets/scenes', help='Directory to scan for .tscn files (default: assets/scenes)')
     parser.add_argument('--dry-run', action='store_true', help='Print to stdout instead of writing')
     args = parser.parse_args()
 
     src_path = Path(args.src)
     output_path = Path(args.output)
+    tscn_path = Path(args.tscn_dir)
 
     if not src_path.exists():
         print(f'ERROR: source directory {src_path} does not exist', file=sys.stderr)
@@ -311,15 +352,23 @@ def main():
     if not cs_files:
         print(f'WARNING: no .cs files found in {src_path}', file=sys.stderr)
 
+    tscn_files = sorted(tscn_path.rglob('*.tscn')) if tscn_path.exists() else []
+    if not tscn_files:
+        print(f'NOTE: no .tscn files found in {tscn_path} (set --tscn-dir to override)')
+
     all_entries = []
     for cs_file in cs_files:
         entries = scan_file(cs_file)
+        all_entries.extend(entries)
+    for tscn_file in tscn_files:
+        entries = scan_tscn_file(tscn_file)
         all_entries.extend(entries)
 
     by_key = dedupe_keys(all_entries)
 
     print('=== i18n String Extraction Report ===')
     print(f'Source: {src_path} ({len(cs_files)} .cs files)')
+    print(f'.tscn:  {tscn_path} ({len(tscn_files)} files)')
     print(f'Extracted: {len(all_entries)} string occurrences')
     print(f'Unique keys: {len(by_key)}')
     print(f'Output: {output_path}')

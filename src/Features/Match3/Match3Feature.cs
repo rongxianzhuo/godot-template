@@ -55,12 +55,15 @@ public partial class Match3Feature : Node
                 new GameStartArgs(Level: 0));
 
             // 3. Game → End (always; out-of-moves or win both reach here).
+            // v1.2 polish #2: forward Level so EndScreen applies matching
+            // per-theme font (Forest/Desert/Ocean) to its Headline + buttons.
             var choice = await ScreenManager.Instance.ShowAsync<EndScreen, EndScreenArgs, EndChoice>(
                 new EndScreenArgs(
                     Won: gameResult.Won,
                     FinalScore: gameResult.Score,
                     MovesUsed: gameResult.MovesUsed,
-                    MovesMax: gameResult.MovesMax));
+                    MovesMax: gameResult.MovesMax,
+                    Level: gameResult.Level));
 
             // 4. End → Title or restart Game.
             //    PlayAgain: loop iteration continues, ShowAsync<GameScreen>() again.

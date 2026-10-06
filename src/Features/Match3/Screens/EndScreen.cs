@@ -37,10 +37,10 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         MouseFilter = MouseFilterEnum.Stop;
 
-        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
-        // (Background, Headline + Subtitle labels, Play Again / Main Menu
-        // buttons). See src/Core/ThemeBuilder.cs.
-        Theme = ThemeBuilder.BuildCosmicTheme();
+        // v1.2 polish #2: default theme Forest — overridden in OnShow with
+        // args.Level (matches the GameScreen that just closed). See
+        // src/Core/ThemeBuilder.cs for the per-theme font mapping.
+        Theme = ThemeBuilder.BuildTheme(ThemeKind.Forest);
 
         var bg = new TextureRect
         {
@@ -97,7 +97,12 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
     protected override void OnShow(EndScreenArgs args)
     {
         GD.Print($"[EndScreen] OnShow(won={args.Won} score={args.FinalScore} " +
-                 $"moves={args.MovesUsed}/{args.MovesMax})");
+                 $"moves={args.MovesUsed}/{args.MovesMax} level={args.Level})");
+
+        // v1.2 polish #2: apply per-theme font based on the level the
+        // player just finished. Matches GameScreen's theme for visual
+        // continuity (e.g. level 25 → Desert on both screens).
+        Theme = ThemeBuilder.BuildTheme(ThemeKindUtils.FromLevel(args.Level));
 
         _headlineLabel.Text = args.Won ? Tr("You Won!") : Tr("Game Over");
         _headlineLabel.AddThemeColorOverride("font_color", args.Won
