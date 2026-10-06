@@ -1,5 +1,6 @@
 using Godot;
 using GameFramework;
+using GodotTemplate.Core;
 
 namespace GodotTemplate.Features.Match3.Screens;
 
@@ -31,6 +32,10 @@ public sealed partial class TitleScreen : Screen
     {
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         MouseFilter = MouseFilterEnum.Stop; // catch clicks so unfocused UI doesn't leak
+
+        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
+        // (Title label, Play/Quit buttons). See src/Core/ThemeBuilder.cs.
+        Theme = ThemeBuilder.BuildCosmicTheme();
 
         // Background (reuses Christine's bg_title.png per SpritePaths)
         var bg = new TextureRect

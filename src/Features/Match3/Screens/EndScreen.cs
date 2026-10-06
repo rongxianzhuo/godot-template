@@ -1,5 +1,6 @@
 using Godot;
 using GameFramework;
+using GodotTemplate.Core;
 
 namespace GodotTemplate.Features.Match3.Screens;
 
@@ -35,6 +36,11 @@ public sealed partial class EndScreen : Screen<EndScreenArgs, EndChoice>
     {
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         MouseFilter = MouseFilterEnum.Stop;
+
+        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
+        // (Background, Headline + Subtitle labels, Play Again / Main Menu
+        // buttons). See src/Core/ThemeBuilder.cs.
+        Theme = ThemeBuilder.BuildCosmicTheme();
 
         var bg = new TextureRect
         {
