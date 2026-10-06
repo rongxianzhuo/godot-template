@@ -1,0 +1,65 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Magic Match v1.1\n"
+"Language: pt-BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: scripts/extract_i18n_strings.py (Christine D+13)\n"
+
+# i18n key: brand.magic_match
+#. Text assignment
+#: src/Features/Match3/GameScenes.cs:41
+msgid "Magic Match"
+msgstr ""
+
+# i18n key: endscreen.game_over
+#. Text assignment
+#: src/Features/Match3/GameScenes.cs:82
+msgid "Game Over"
+msgstr ""
+
+# i18n key: endscreen.main_menu
+#. Button factory call
+#: src/Features/Match3/GameScenes.cs:97
+msgid "Main Menu"
+msgstr ""
+
+# i18n key: endscreen.play_again
+#. Button factory call
+#: src/Features/Match3/GameScenes.cs:94
+msgid "Play Again"
+msgstr ""
+
+# i18n key: endscreen.you_won
+#. Text assignment
+#: src/Features/Match3/GameScenes.cs:82
+msgid "You Won!"
+msgstr ""
+
+# i18n key: hud.moves (1 placeholder)
+#. Text assignment
+#: src/Features/Match3/GameScenes.cs,
+#: src/Features/Match3/Match3Feature.cs:120:114
+msgid "Moves: {0}"
+msgstr ""
+
+# i18n key: hud.score
+#. Text assignment
+#: src/Features/Match3/GameScenes.cs,
+#: src/Features/Match3/Match3Feature.cs:119:109
+msgid "Score: {0}"
+msgstr ""
+
+# i18n key: title.play
+#. Button factory call
+#: src/Features/Match3/GameScenes.cs:53
+msgid "Play"
+msgstr ""
+
+# i18n key: title.quit
+#. Button factory call
+#: src/Features/Match3/GameScenes.cs:56
+msgid "Quit"
+msgstr ""
