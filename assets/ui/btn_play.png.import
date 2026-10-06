@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5utqnklruan4"
-path="res://.godot/imported/btn_play.png-6c8a88e13e96531c8bf805f16cc6a670.ctex"
+uid="uid://christine_btn_play_v1_polish6"
+path="res://.godot/imported/btn_play.png-00000000000000000000000000000006.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/ui/btn_play.png"
-dest_files=["res://.godot/imported/btn_play.png-6c8a88e13e96531c8bf805f16cc6a670.ctex"]
+dest_files=["res://.godot/imported/btn_play.png-00000000000000000000000000000006.ctex"]
 
 [params]
 
