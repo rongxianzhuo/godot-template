@@ -35,6 +35,7 @@
 | [0010](0010-v1-ship-ready.md) | v1.0 ship-ready 双身份 (产品 + 模板) | ✅ Accepted | 2026-10-06 |
 | 0011 | App Bundle per-language split (v1.2 polish #1) | 📋 Reserved | D+23 reserved |
 | [0012](0012-per-theme-ttf.md) | Per-Theme TTF Overrides v1.2 phase 1 (weight remap) | ✅ Accepted | 2026-10-08 |
+| [0013](0013-splash-i18n.md) | Splash Screen i18n (v1.2 polish #3) | ✅ Accepted | 2026-10-09 |
 
 ---
 
