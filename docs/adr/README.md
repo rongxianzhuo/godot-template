@@ -37,6 +37,7 @@
 | [0012](0012-per-theme-ttf.md) | Per-Theme TTF Overrides v1.2 phase 1 (weight remap) | ✅ Accepted | 2026-10-08 |
 | [0013](0013-splash-i18n.md) | Splash Screen i18n (v1.2 polish #3) | ✅ Accepted | 2026-10-09 |
 | [0014](0014-language-picker.md) | Language Picker + Settings Screen (v1.2 polish #4) | ✅ Accepted | 2026-10-10 |
+| [0015](0015-i18n-key-naming.md) | i18n Key Naming + Dedup (v1.2 polish #5) | ✅ Accepted | 2026-10-11 |
 
 ---
 
