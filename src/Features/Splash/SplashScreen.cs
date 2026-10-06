@@ -1,4 +1,5 @@
 using Godot;
+using GodotTemplate.Core;
 
 namespace GodotTemplate.Features.Splash;
 
@@ -43,6 +44,12 @@ public partial class SplashScreen : Control
     public override void _Ready()
     {
         GD.Print("[SplashScreen] _Ready — starting B-v3 splash");
+
+        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
+        // (Title + Subtitle Labels, Separator ColorRect). The .tscn
+        // already specifies font_size + outline for Title (52px) and
+        // font_size for Subtitle (18px); Theme provides the font family.
+        Theme = ThemeBuilder.BuildCosmicTheme();
 
         // Resolve the 5 dot ColorRects from the HBoxContainer.
         // The .tscn guarantees exactly 5 children (Dot1..Dot5) per build spec §3.1.

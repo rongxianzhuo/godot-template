@@ -1,5 +1,6 @@
 using Godot;
 using GameFramework;
+using GodotTemplate.Core;
 
 namespace GodotTemplate.Features.Match3.Screens;
 
@@ -52,6 +53,11 @@ public sealed partial class GameScreen : Screen<GameStartArgs, GameResult>
     {
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         MouseFilter = MouseFilterEnum.Stop;
+
+        // v1.1 polish #3: apply Fredoka-Bold theme to all child Controls
+        // (Background, HUD Score/Moves labels, BoardView). See
+        // src/Core/ThemeBuilder.cs.
+        Theme = ThemeBuilder.BuildCosmicTheme();
 
         // Background (reuses Christine's bg_game.png per SpritePaths)
         var bg = new TextureRect
