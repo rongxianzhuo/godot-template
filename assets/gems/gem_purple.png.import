@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cavvo2i38uvam"
-path="res://.godot/imported/gem_purple.png-8f59dbc5c919c8b772cc6187bb66d38a.ctex"
+uid="uid://christine_gem_purple_v1_polish7"
+path="res://.godot/imported/gem_purple.png-00000000000000000000000000000007.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/gems/gem_purple.png"
-dest_files=["res://.godot/imported/gem_purple.png-8f59dbc5c919c8b772cc6187bb66d38a.ctex"]
+dest_files=["res://.godot/imported/gem_purple.png-00000000000000000000000000000007.ctex"]
 
 [params]
 
