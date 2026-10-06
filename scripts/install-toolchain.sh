@@ -2,7 +2,7 @@
 # install-toolchain.sh — One-shot toolchain installer for godot-template.
 #
 # Installs everything needed to build the project on a fresh Ubuntu machine:
-#   1. apt deps (git, ssh, JDK 17, libicu, fontconfig, unzip, ...)
+#   1. apt deps (git, ssh, JDK 17, libicu, fontconfig, unzip, python3-polib, ...)
 #   2. .NET 9 SDK (LTS channel) to /opt/dotnet
 #   3. Godot 4.7.2 Mono editor + symlink to /usr/local/bin/godot
 #   4. Android SDK (cmdline-tools + platforms;android-36 + build-tools;36.1.0
@@ -102,12 +102,14 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
     libfontconfig1 \
     libfreetype6 libxinerama1 libxcursor1 libxrandr2 libxi6 \
     libgl1 libegl1 libasound2t64 \
+    python3-polib \
     >/dev/null || DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
         git openssh-client \
         openjdk-17-jdk-headless \
         libfontconfig1 \
         libfreetype6 libxinerama1 libxcursor1 libxrandr2 libxi6 \
         libgl1 libegl1 libasound2 \
+        python3-polib \
         >/dev/null
 
 # libicu: pick the highest-numbered one available (74, 76, 78, ...).
