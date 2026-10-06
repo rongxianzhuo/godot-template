@@ -60,3 +60,7 @@ obj/
 keystore/
 # Godot editor credentials
 .godot/editor/*
+
+# Python __pycache__ (from running scripts/extract_i18n_strings.py locally)
+__pycache__/
+*.pyc
