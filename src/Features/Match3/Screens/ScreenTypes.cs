@@ -49,3 +49,19 @@ public enum EndChoice
     /// <summary>Tap "Main Menu" — back to Title.</summary>
     MainMenu,
 }
+
+/// <summary>
+/// Argument passed into <see cref="SettingsScreen"/> on open. v1.2 polish #4
+/// (per ADR-0014): Settings is a parameterless modal for now — this record
+/// is a placeholder so the framework's typed-TCS machinery (Screen<T>)
+/// stays consistent with the other screens. Future settings (sound, theme)
+/// will add fields here.
+/// </summary>
+public readonly record struct SettingsArgs();
+
+/// <summary>
+/// Result returned from <see cref="SettingsScreen"/> on close. Tells the
+/// caller whether the user changed the locale (so it can refresh visible
+/// labels) and what locale was applied.
+/// </summary>
+public readonly record struct SettingsResult(bool LocaleChanged, string AppliedLocale);

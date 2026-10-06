@@ -1,6 +1,7 @@
 using Godot;
 using GameFramework;
 using GodotTemplate.Core;
+using GodotTemplate.Features.Settings;
 
 namespace GodotTemplate.Features.Match3.Screens;
 
@@ -21,6 +22,8 @@ namespace GodotTemplate.Features.Match3.Screens;
 ///       ├── Spacer (40 px)
 ///       ├── Play button
 ///       ├── Spacer (20 px)
+///       ├── Settings button  (v1.2 polish #4, opens SettingsScreen modal)
+///       ├── Spacer (10 px)
 ///       └── Quit button
 /// </code>
 /// </summary>
@@ -82,6 +85,16 @@ public sealed partial class TitleScreen : Screen
         var spacer2 = new Control { CustomMinimumSize = new Vector2(0, 20) };
         center.AddChild(spacer2);
 
+        // v1.2 polish #4 (per ADR-0014): Settings entry point. Opens
+        // SettingsScreen as a modal; on close, title screen stays
+        // (no flow change — user can keep playing).
+        var settingsButton = MakeButton(Tr("Settings"));
+        settingsButton.Pressed += OnSettingsPressed;
+        center.AddChild(settingsButton);
+
+        var spacer3 = new Control { CustomMinimumSize = new Vector2(0, 10) };
+        center.AddChild(spacer3);
+
         var quitButton = MakeButton(Tr("Quit"));
         quitButton.Pressed += OnQuitPressed;
         center.AddChild(quitButton);
@@ -102,6 +115,18 @@ public sealed partial class TitleScreen : Screen
     {
         GD.Print("[TitleScreen] Play pressed → CloseScreen()");
         CloseScreen();
+    }
+
+    private async void OnSettingsPressed()
+    {
+        GD.Print("[TitleScreen] Settings pressed → ShowAsync<SettingsScreen>");
+        // SettingsScreen is modal — ShowAsync returns after user clicks
+        // Apply/Cancel. Title screen stays as underlying, modal is dimmed.
+        // We don't do anything with the result — the SettingsScreen itself
+        // applied the locale + persisted via LocalePreferences.
+        await ScreenManager.Instance.ShowAsync<SettingsScreen, SettingsArgs, SettingsResult>(
+            new SettingsArgs());
+        GD.Print("[TitleScreen] SettingsScreen closed → returning to title");
     }
 
     private void OnQuitPressed()

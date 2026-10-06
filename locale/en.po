@@ -103,3 +103,45 @@ msgstr "Play"
 #: src/Features/Match3/Screens/TitleScreen.cs:85
 msgid "Quit"
 msgstr "Quit"
+
+# i18n key: settings.title
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:118
+msgid "Settings"
+msgstr "Settings"
+
+# i18n key: settings.language
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:140
+msgid "Language"
+msgstr "Language"
+
+# i18n key: settings.apply
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:181
+msgid "Apply"
+msgstr "Apply"
+
+# i18n key: settings.cancel
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:193
+msgid "Cancel"
+msgstr "Cancel"
+
+# i18n key: settings.english
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:159
+msgid "English"
+msgstr "English"
+
+# i18n key: settings.spanish
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:160
+msgid "Español"
+msgstr "Español"
+
+# i18n key: settings.portuguese
+#. Tr() translation call
+#: src/Features/Settings/SettingsScreen.cs:161
+msgid "Português"
+msgstr "Português"
