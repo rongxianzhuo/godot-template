@@ -9,6 +9,14 @@
     <AssemblyName>Match3Tests</AssemblyName>
     <!-- Self-contained AOT-friendly defaults; tweak per env if needed. -->
     <InvariantGlobalization>true</InvariantGlobalization>
+    <!--
+      DISABLE_EVENTBUS: skip EventBus.Instance.Publish calls + omit
+      GameFramework/Events imports in algorithm files compiled here.
+      Keeps the test csproj pure .NET 9 (no Godot / framework dependency).
+      The event flow is still verified via the legacy [Obsolete] PhaseChanged
+      event in GameState (test code uses pragma warning disable CS0618).
+    -->
+    <DefineConstants>$(DefineConstants);DISABLE_EVENTBUS</DefineConstants>
   </PropertyGroup>
 
   <!--
