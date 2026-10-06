@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://christine_btn_locked_v1"
-path="res://.godot/imported/btn_locked.png-00000000000000000000000000000005.ctex"
+uid="uid://bd3oypa8aenfa"
+path="res://.godot/imported/btn_locked.png-4348bb0aa6fa43601e4424893f1f35c6.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/ui/btn_locked.png"
-dest_files=["res://.godot/imported/btn_locked.png-00000000000000000000000000000005.ctex"]
+dest_files=["res://.godot/imported/btn_locked.png-4348bb0aa6fa43601e4424893f1f35c6.ctex"]
 
 [params]
 
