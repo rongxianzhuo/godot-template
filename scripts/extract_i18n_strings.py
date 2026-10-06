@@ -138,11 +138,6 @@ def suggest_key(text: str, file_path: Path) -> str:
         return 'hud.score'
     if 'moves' in text_clean:
         return 'hud.moves'
-    # v1.2: dotted-key msgid pattern (e.g. "splash.subtitle" — auto_translate_mode=1
-    # labels use a logical key as msgid rather than English text). Detect dots and
-    # use the literal as the key.
-    if '.' in text_clean and all(c.isalnum() or c == '.' or c == '_' for c in text_clean):
-        return text_clean
 
     # Generic fallback: filename + first 20 chars
     file_key = file_path.stem.lower().replace('.cs', '')
